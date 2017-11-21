@@ -2,6 +2,5 @@ version: '2'
 services:
   eth_node:
     build: .
-    entrypoint: /root/start.sh
-    volumes:
-      - ./files/node.js:/root/files/node.js:ro
+    entrypoint: /root/files/start.sh
+
