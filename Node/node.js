@@ -1,7 +1,7 @@
 const net = require("net")
 
 // Create a socket (client) that connects to the server
-console.info("Script runs good")
+console.info("Script runs good and great")
 const socket = new net.Socket()
 socket.connect(2020, "localhost", function () {
   console.info("Client: Connected to server")
