@@ -5,6 +5,6 @@ BOOTSTRAP_IP=`getent hosts bootstrap | cut -d" " -f1`
 GETH_OPTS=${@/IPAddress/$BOOTSTRAP_IP}
 echo 'Schranz'
 echo $GETH_OPTS
-node /root/files/node.js &
+python /root/files/node.py &
 geth $GETH_OPTS
 
