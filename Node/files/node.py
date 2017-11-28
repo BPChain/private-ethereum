@@ -18,7 +18,7 @@ def connect_to_blockchain():
 def start_mining(web3):
     web3.miner.start(1)
 
-def retrieve_last_blocks(number_of_last_sent_block, web3): # Gets the last mined blocks since last send session
+def retrieve_last_blocks(number_of_last_sent_block, web3): # Gets the last mined blocks since last send cycle
     last_blocks = []
     number_of_last_block = web3.eth.getBlock('latest').number
     if number_of_last_block > number_of_last_sent_block:
@@ -28,26 +28,37 @@ def retrieve_last_blocks(number_of_last_sent_block, web3): # Gets the last mined
         return(number_of_last_block, last_blocks)
     else:
         print("Nothing to send")
-        return(number_of_last_sent_block, [])
+        return(number_of_last_sent_block, last_blocks)
 
-def provide_data(web3):
+def calculate_avg_block_difficulty(blocks_to_send): # get the avg block difficulty of the current send cycle
+    avg_block_difficulty = 0
+    if not blocks_to_send:  #checks if list is empty
+        return None
+    else:
+        for block in blocks_to_send:
+            print("Single Difficulty:")
+            print(block.totalDifficulty)
+            avg_block_difficulty += block.totalDifficulty
+        avg_block_difficulty = avg_block_difficulty / len(blocks_to_send)
+        return avg_block_difficulty
+
+
+def provide_data(web3): # Loop, which runs on the nodes to get and send the data
     number_of_last_sent_block = 0
     while True:
         time.sleep(10)
         retrieved_blocks = retrieve_last_blocks(number_of_last_sent_block, web3)
         number_of_last_sent_block = retrieved_blocks[0]
         blocks_to_send = retrieved_blocks[1]
-        print("Number of last sent block:" + str(number_of_last_sent_block))
-        print("Blocks:")
-        print(blocks_to_send)
+        avg_block_difficulty = calculate_avg_block_difficulty(blocks_to_send)
         node_id = web3.admin.nodeInfo.id
         hash_rate = web3.eth.hashrate
         gas_price = web3.eth.gasPrice
-        node_data = {'node_id': node_id, 'hashrate': hash_rate, 'gas_price': gas_price}
+        node_data = {'node_id': node_id, 'hashrate': hash_rate, 'gas_price': gas_price, 'Avg Block difficulty': avg_block_difficulty}
         print(node_data)
         send_data(node_data)
 
-def send_data(node_data):
+def send_data(node_data): #send the data to the server
     try:
         SERVER_ADRESS = 'http://localhost:3030'
         requests.post(SERVER_ADRESS, data=node_data)
