@@ -3,22 +3,65 @@ import web3
 import time
 from web3 import Web3, HTTPProvider, TestRPCProvider
 import requests
-connected = False
-SERVER_ADRESS = 'http://localhost:3030'
 
-while not connected:
-    try:
+def connect_to_blockchain():
+    connected = False
+    while not connected:
+        try:
+            time.sleep(10)
+            web3 = Web3(HTTPProvider('http://localhost:8545'))
+            return web3
+        except Exception:
+            pass
+        connected = True
+
+def start_mining(web3):
+    web3.miner.start(1)
+
+def retrieve_last_blocks(number_of_last_sent_block, web3): # Gets the last mined blocks since last send session
+    last_blocks = []
+    number_of_last_block = web3.eth.getBlock('latest').number
+    if number_of_last_block > number_of_last_sent_block:
+        number_of_blocks_to_send = number_of_last_block - number_of_last_sent_block
+        for i in range(0, number_of_blocks_to_send):
+            last_blocks.append(web3.eth.getBlock(number_of_last_block - i))
+        return(number_of_last_block, last_blocks)
+    else:
+        print("Nothing to send")
+        return(number_of_last_sent_block, [])
+
+def provide_data(web3):
+    number_of_last_sent_block = 0
+    while True:
         time.sleep(10)
-        web3 = Web3(HTTPProvider('http://localhost:8545'))
+        retrieved_blocks = retrieve_last_blocks(number_of_last_sent_block, web3)
+        number_of_last_sent_block = retrieved_blocks[0]
+        blocks_to_send = retrieved_blocks[1]
+        print("Number of last sent block:" + str(number_of_last_sent_block))
+        print("Blocks:")
+        print(blocks_to_send)
+        node_id = web3.admin.nodeInfo.id
+        hash_rate = web3.eth.hashrate
+        gas_price = web3.eth.gasPrice
+        node_data = {'node_id': node_id, 'hashrate': hash_rate, 'gas_price': gas_price}
+        print(node_data)
+        send_data(node_data)
+
+def send_data(node_data):
+    try:
+        SERVER_ADRESS = 'http://localhost:3030'
+        requests.post(SERVER_ADRESS, data=node_data)
+        print("Request has been sent")
     except Exception:
+        print("Connection has not been established")
         pass
-    connected = True
-web3.miner.start(1)
-while True:
-    time.sleep(10)
-    print(web3.eth.getBalance(web3.eth.accounts[0]))
-    print(web3.eth.hashrate)
 
-blockchain_data = {'hashrate' : web3.eth.hashrate}
 
-requests.post(SERVER_ADRESS, data = blockchain_data)
+
+
+if __name__ == "__main__":
+    web3 = connect_to_blockchain()
+    start_mining(web3)
+    provide_data(web3)
+
+
