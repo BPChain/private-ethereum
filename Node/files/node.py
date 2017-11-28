@@ -4,6 +4,7 @@ import time
 from web3 import Web3, HTTPProvider, TestRPCProvider
 import requests
 
+
 def connect_to_blockchain():
     connected = False
     while not connected:
@@ -15,10 +16,13 @@ def connect_to_blockchain():
             pass
         connected = True
 
+
 def start_mining(web3):
     web3.miner.start(1)
 
-def retrieve_last_blocks(number_of_last_sent_block, web3): # Gets the last mined blocks since last send cycle
+
+# Gets the last mined blocks since last send cycle
+def retrieve_last_blocks(number_of_last_sent_block, web3):
     last_blocks = []
     number_of_last_block = web3.eth.getBlock('latest').number
     if number_of_last_block > number_of_last_sent_block:
@@ -30,9 +34,11 @@ def retrieve_last_blocks(number_of_last_sent_block, web3): # Gets the last mined
         print("Nothing to send")
         return(number_of_last_sent_block, last_blocks)
 
-def calculate_avg_block_difficulty(blocks_to_send): # get the avg block difficulty of the current send cycle
+
+# get the avg block difficulty of the current send cycle
+def calculate_avg_block_difficulty(blocks_to_send):
     avg_block_difficulty = 0
-    if not blocks_to_send:  #checks if list is empty
+    if not blocks_to_send:  # checks if list is empty
         return None
     else:
         for block in blocks_to_send:
@@ -43,7 +49,7 @@ def calculate_avg_block_difficulty(blocks_to_send): # get the avg block difficul
         return avg_block_difficulty
 
 
-def provide_data(web3): # Loop, which runs on the nodes to get and send the data
+def provide_data(web3):  # Loop, which runs on the nodes to get and send the data
     number_of_last_sent_block = 0
     while True:
         time.sleep(10)
@@ -58,7 +64,8 @@ def provide_data(web3): # Loop, which runs on the nodes to get and send the data
         print(node_data)
         send_data(node_data)
 
-def send_data(node_data): #send the data to the server
+
+def send_data(node_data):  # send the data to the server
     try:
         SERVER_ADRESS = 'http://localhost:3030'
         requests.post(SERVER_ADRESS, data=node_data)
@@ -70,9 +77,6 @@ def send_data(node_data): #send the data to the server
 
 
 
-if __name__ == "__main__":
-    web3 = connect_to_blockchain()
     start_mining(web3)
     provide_data(web3)
-
 
