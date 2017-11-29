@@ -7,6 +7,7 @@ from web3 import Web3, HTTPProvider
 import requests
 import netifaces as ni
 from functools import reduce
+import json
 
 
 def connect_to_blockchain():
@@ -81,11 +82,14 @@ def gather_data(blocks_to_send, last_sent_block, web3):
 def send_data(node_data):
     try:
         ni.ifaddresses('eth0')
-        ip = ni.ifaddresses('eth0')[ni.AF_INET][0]['addr']
+        """ip = ni.ifaddresses('eth0')[ni.AF_INET][0]['addr']
         split = ip.split('.')
         server_ip = split[0] + '.' + split[1] + '.' + split[2] + '.' + '1'
-        SERVER_ADRESS = 'http://' + server_ip + ':3030'
-        requests.post(SERVER_ADRESS, data=node_data, headers={'content-type':'application/json'}, timeout = 1)
+        SERVER_ADRESS = 'http://' + server_ip + ':3030'"""
+        SERVER_ADRESS = 'http://docker.for.mac.localhost:3030'
+        print(SERVER_ADRESS)
+
+        requests.post(SERVER_ADRESS, json=node_data, headers={'content-type':'application/json'}, timeout = 1)
         print("Request has been sent")
     except Exception as e:
         print("Connection has not been established")
