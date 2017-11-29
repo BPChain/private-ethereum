@@ -43,6 +43,7 @@ def calculate_avg_block_difficulty(blocks_to_send):
 
 def calculate_avg_block_time(blocks_to_send, last_sent_block):
     blocks_to_send = [last_sent_block] + blocks_to_send
+    #first block might be genesis block with timestamp 0. this has to be catched.
     if len(blocks_to_send) == 1:
         return 0
     else:
@@ -88,9 +89,10 @@ def send_data(node_data):
         split = ip.split('.')
         server_ip = split[0] + '.' + split[1] + '.' + split[2] + '.' + '1'
         SERVER_ADDRESS = 'http://' + server_ip + ':3030'
+        print(SERVER_ADDRESS)
         response = requests.post(SERVER_ADDRESS, data=node_data)
         print("Request has been sent, response: " + response.text)
-    except ConnectionError:
+    except Exception:
         print("Connection has not been established")
 
 
