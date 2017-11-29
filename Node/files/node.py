@@ -1,6 +1,7 @@
 import time
 from web3 import Web3, HTTPProvider
 import requests
+import netifaces as ni
 
 
 def connect_to_blockchain():
@@ -68,18 +69,31 @@ def provide_data(web3):  # Loop, which runs on the nodes to get and send the dat
         blocks_to_send = retrieved_blocks[1]
         avg_block_difficulty = calculate_avg_block_difficulty(blocks_to_send)
         avg_block_time = calculate_avg_block_time(blocks_to_send, last_sent_block)
-        node_id = web3.admin.nodeInfo.id
+        host_id = web3.admin.nodeInfo.id
         hash_rate = web3.eth.hashrate
         gas_price = web3.eth.gasPrice
-        node_data = {'node_id': node_id, 'hashrate': hash_rate, 'gas_price': gas_price,
-                     'avg_block_difficulty': avg_block_difficulty, "avg_block_time": avg_block_time}
+        is_mining = web3.eth.mining
+        if is_mining == True:
+            is_mining = 1
+        else:
+            is_mining = 0
+        if avg_block_difficulty == None:
+            avg_block_difficulty = 0
+        if avg_block_time == None:
+            avg_block_time = 0
+        node_data = {'hostId': host_id, 'hashrate': hash_rate, 'gasPrice': gas_price,
+                     'avgBlockDifficulty': avg_block_difficulty, "avgBlockTime": avg_block_time, "isMining": is_mining}
         print(node_data)
         send_data(node_data)
 
 
 def send_data(node_data):  # send the data to the server
     try:
-        SERVER_ADRESS = 'http://localhost:3030'
+        ni.ifaddresses('eth0')
+        ip = ni.ifaddresses('eth0')[ni.AF_INET][0]['addr']
+        split = ip.split('.')
+        server_ip = split[0] + '.' + split[1] + '.' + split[2] + '.' + '1'
+        SERVER_ADRESS = 'http://' + server_ip + ':3030'
         requests.post(SERVER_ADRESS, data=node_data)
         print("Request has been sent")
     except Exception:
@@ -87,7 +101,13 @@ def send_data(node_data):  # send the data to the server
         pass
 
 
+
+
+
+
 if __name__ == "__main__":
+    ni.ifaddresses('eth0')
+    ip = ni.ifaddresses('eth0')[ni.AF_INET][0]['addr']
     web3_connector = connect_to_blockchain()
     start_mining(web3_connector)
     provide_data(web3_connector)
