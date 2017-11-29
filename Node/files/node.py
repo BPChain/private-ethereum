@@ -84,7 +84,7 @@ def send_data(node_data):
         ip = ni.ifaddresses('eth0')[ni.AF_INET][0]['addr']
         split = ip.split('.')
         server_ip = split[0] + '.' + split[1] + '.' + split[2] + '.' + '1'
-        SERVER_ADRESS = 'http://' + server_ip + ':3031'
+        SERVER_ADRESS = 'http://' + server_ip + ':3030'
         requests.post(SERVER_ADRESS, json=node_data, headers={'content-type':'application/json'}, timeout = 1)
         print("Request has been sent")
     except Exception as e:
