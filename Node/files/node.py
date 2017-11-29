@@ -1,10 +1,12 @@
+"""I read values from my local blockchain node by using the Web3 Library which uses the nodes RPC-API. Make sure the
+    required apis are unlocked in geth. I send the values I read to a server in a specified interval via a http post.
+    Important variables are SERVER_ADDRESS and SEND_PERIOD. The values I send can currently be seen in gather_data"""
+
 import time
 from web3 import Web3, HTTPProvider
 import requests
 import netifaces as ni
 from functools import reduce
-
-SERVER_ADDRESS = 'http://localhost:3030'
 
 
 def connect_to_blockchain():
@@ -18,39 +20,36 @@ def start_mining(web3):
     web3.miner.start(1)
 
 
-def retrieve_last_blocks(number_of_last_sent_block, web3):
-    """Gets the last mined blocks since last send cycle"""
-    last_blocks = []
+def retrieve_new_blocks_since(number_of_last_sent_block, web3):
+    """Gets the newly mined blocks since last send cycle"""
+    new_blocks = []
     number_of_last_block = web3.eth.getBlock('latest').number
     if number_of_last_block > number_of_last_sent_block:
         number_of_blocks_to_send = number_of_last_block - number_of_last_sent_block
         for i in range(1, number_of_blocks_to_send + 1):
-            last_blocks.append(web3.eth.getBlock(number_of_last_sent_block + i))
-        return number_of_last_block, last_blocks
+            new_blocks.append(web3.eth.getBlock(number_of_last_sent_block + i))
+        return number_of_last_block, new_blocks
     else:
-        return number_of_last_sent_block, last_blocks
+        return number_of_last_sent_block, new_blocks
 
 
 def calculate_avg_block_difficulty(blocks_to_send):
-    if not blocks_to_send:  # checks if list is empty
-        return None
+    if not blocks_to_send:
+        return 0
     else:
-        for block in blocks_to_send:
-            print(block)
         print(blocks_to_send)
-        print(blocks_to_send[0].timestamp)
         return reduce((lambda accum, block: accum + block.timestamp), blocks_to_send, 0) / len(blocks_to_send)
 
 
 def calculate_avg_block_time(blocks_to_send, last_sent_block):
     blocks_to_send = [last_sent_block] + blocks_to_send
     if len(blocks_to_send) == 1:
-        return None
+        return 0
     else:
         if blocks_to_send[0] is None:
             blocks_to_send.remove(None)
         if len(blocks_to_send) == 1:
-            return None
+            return 0
         for block in blocks_to_send:
             print(block.timestamp)
         deltas = [next.timestamp - current.timestamp for current, next in zip(blocks_to_send, blocks_to_send[1:])]
@@ -58,12 +57,12 @@ def calculate_avg_block_time(blocks_to_send, last_sent_block):
 
 
 def provide_data_every(n_seconds, web3):
-    """Loop, which runs on the nodes to get and send the data"""
-    number_of_last_sent_block = 0
+    last_block_number = 0
     while True:
         time.sleep(n_seconds)
-        last_sent_block = web3.eth.getBlock(number_of_last_sent_block) if number_of_last_sent_block > 0 else None
-        number_of_last_sent_block, blocks_to_send = retrieve_last_blocks(number_of_last_sent_block, web3)
+        last_sent_block = web3.eth.getBlock(last_block_number) if last_block_number > 0 else None
+        new_last_block_number, blocks_to_send = retrieve_new_blocks_since(last_block_number, web3)
+        last_block_number = new_last_block_number
         node_data = gather_data(blocks_to_send, last_sent_block, web3)
         print(node_data)
         send_data(node_data)
@@ -76,38 +75,27 @@ def gather_data(blocks_to_send, last_sent_block, web3):
     host_id = web3.admin.nodeInfo.id
     hash_rate = web3.eth.hashrate
     gas_price = web3.eth.gasPrice
-    is_mining = web3.eth.mining
-    if is_mining:
-        is_mining = 1
-    else:
-        is_mining = 0
-    if avg_block_difficulty is None:
-        avg_block_difficulty = 0
-    if avg_block_time is None:
-        avg_block_time = 0
+    is_mining = 1 if web3.eth.mining else 0
     node_data = {'hostId': host_id, 'hashrate': hash_rate, 'gasPrice': gas_price,
                  'avgBlockDifficulty': avg_block_difficulty, "avgBlockTime": avg_block_time, "isMining": is_mining}
     return node_data
 
 
-def send_data(node_data):  # send the data to the server
+def send_data(node_data):
     try:
         ni.ifaddresses('eth0')
         ip = ni.ifaddresses('eth0')[ni.AF_INET][0]['addr']
         split = ip.split('.')
         server_ip = split[0] + '.' + split[1] + '.' + split[2] + '.' + '1'
         SERVER_ADDRESS = 'http://' + server_ip + ':3030'
-        requests.post(SERVER_ADDRESS, data=node_data)
-        print("Request has been sent")
-    except Exception:
+        response = requests.post(SERVER_ADDRESS, data=node_data)
+        print("Request has been sent, response: " + response.text)
+    except ConnectionError:
         print("Connection has not been established")
-        pass
 
 
 if __name__ == "__main__":
     SEND_PERIOD  = 10
-    ni.ifaddresses('eth0')
-    ip = ni.ifaddresses('eth0')[ni.AF_INET][0]['addr']
     web3_connector = connect_to_blockchain()
     start_mining(web3_connector)
     provide_data_every(SEND_PERIOD, web3_connector)
