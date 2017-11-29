@@ -24,7 +24,6 @@ def retrieve_last_blocks(number_of_last_sent_block, web3):
             last_blocks.append(web3.eth.getBlock(number_of_last_sent_block + i))
         return(number_of_last_block, last_blocks)
     else:
-        print("Nothing to send")
         return (number_of_last_sent_block, last_blocks)
 
 
@@ -35,19 +34,24 @@ def calculate_avg_block_difficulty(blocks_to_send):
         return None
     else:
         for block in blocks_to_send:
-            print(block.timestamp)
             avg_block_difficulty += block.totalDifficulty
         avg_block_difficulty = avg_block_difficulty / len(blocks_to_send)
         return avg_block_difficulty
 
-def calculate_avg_block_time(blocks_to_send):
-    avg_block_time = 0
-    if not blocks_to_send:  # checks if list is empty
+def calculate_avg_block_time(blocks_to_send, last_sent_block):
+    blocks_to_send = [last_sent_block] + blocks_to_send
+    if len(blocks_to_send) == 1:
         return None
     else:
+        if blocks_to_send[0] == None:
+            blocks_to_send.remove(None)
+        if len(blocks_to_send) == 1:
+            return None
         for block in blocks_to_send:
-            pass
-
+            print(block.timestamp)
+        deltas = [next.timestamp - current.timestamp for current, next in zip(blocks_to_send, blocks_to_send[1:])]
+        avg_block_time = sum(deltas) / len(deltas)
+        return avg_block_time
 
 
 
@@ -55,16 +59,20 @@ def provide_data(web3):  # Loop, which runs on the nodes to get and send the dat
     number_of_last_sent_block = 0
     while True:
         time.sleep(10)
+        if number_of_last_sent_block == 0:
+            last_sent_block = None
+        else:
+            last_sent_block = web3.eth.getBlock(number_of_last_sent_block)
         retrieved_blocks = retrieve_last_blocks(number_of_last_sent_block, web3)
         number_of_last_sent_block = retrieved_blocks[0]
         blocks_to_send = retrieved_blocks[1]
         avg_block_difficulty = calculate_avg_block_difficulty(blocks_to_send)
-        #avg_block_time = calculate_avg_block_time(blocks_to_send)
+        avg_block_time = calculate_avg_block_time(blocks_to_send, last_sent_block)
         node_id = web3.admin.nodeInfo.id
         hash_rate = web3.eth.hashrate
         gas_price = web3.eth.gasPrice
         node_data = {'node_id': node_id, 'hashrate': hash_rate, 'gas_price': gas_price,
-                     'Avg Block difficulty': avg_block_difficulty}
+                     'avg_block_difficulty': avg_block_difficulty, "avg_block_time": avg_block_time}
         print(node_data)
         send_data(node_data)
 
