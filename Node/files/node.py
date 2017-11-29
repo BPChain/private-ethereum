@@ -37,7 +37,6 @@ def calculate_avg_block_difficulty(blocks_to_send):
     if not blocks_to_send:
         return 0
     else:
-        print(blocks_to_send)
         return reduce((lambda accum, block: accum + block.timestamp), blocks_to_send, 0) / len(blocks_to_send)
 
 
@@ -51,8 +50,6 @@ def calculate_avg_block_time(blocks_to_send, last_sent_block):
             blocks_to_send.remove(None)
         if len(blocks_to_send) == 1:
             return 0
-        for block in blocks_to_send:
-            print(block.timestamp)
         deltas = [next.timestamp - current.timestamp for current, next in zip(blocks_to_send, blocks_to_send[1:])]
         return sum(deltas) / len(deltas)
 
@@ -72,7 +69,6 @@ def provide_data_every(n_seconds, web3):
 def gather_data(blocks_to_send, last_sent_block, web3):
     avg_block_difficulty = calculate_avg_block_difficulty(blocks_to_send)
     avg_block_time = calculate_avg_block_time(blocks_to_send, last_sent_block)
-    node_id = web3.admin.nodeInfo.id
     host_id = web3.admin.nodeInfo.id
     hash_rate = web3.eth.hashrate
     gas_price = web3.eth.gasPrice
@@ -88,11 +84,10 @@ def send_data(node_data):
         ip = ni.ifaddresses('eth0')[ni.AF_INET][0]['addr']
         split = ip.split('.')
         server_ip = split[0] + '.' + split[1] + '.' + split[2] + '.' + '1'
-        SERVER_ADDRESS = 'http://' + server_ip + ':3030'
-        print(SERVER_ADDRESS)
-        response = requests.post(SERVER_ADDRESS, data=node_data)
-        print("Request has been sent, response: " + response.text)
-    except Exception:
+        SERVER_ADRESS = 'http://' + server_ip + ':3030'
+        requests.post(SERVER_ADRESS, data=node_data, headers={'content-type':'application/json'}, timeout = 1)
+        print("Request has been sent")
+    except Exception as e:
         print("Connection has not been established")
 
 
