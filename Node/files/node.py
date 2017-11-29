@@ -7,7 +7,6 @@ from web3 import Web3, HTTPProvider
 import requests
 import netifaces as ni
 from functools import reduce
-import json
 import socket
 
 
