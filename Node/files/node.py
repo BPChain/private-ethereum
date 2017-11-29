@@ -74,9 +74,8 @@ def send_data(node_data):  # send the data to the server
         print("Connection has not been established")
         pass
 
-
-
-
+if __name__ == "__main__":
+    web3 = connect_to_blockchain()
     start_mining(web3)
     provide_data(web3)
 
