@@ -2,6 +2,7 @@ FROM ethereum/client-go
 
 RUN apk add --update git bash python3 musl-dev gcc python3-dev py3-netifaces
 RUN pip3 install web3
+RUN pip3 install websocket-client
 
 COPY files root/files
 RUN chmod +x /root/files/start_eth_node.sh

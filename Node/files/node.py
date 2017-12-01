@@ -8,7 +8,8 @@ import requests
 import netifaces as ni
 from functools import reduce
 import socket
-
+from websocket import create_connection
+import json
 
 def connect_to_blockchain():
     web3 = Web3(HTTPProvider('http://localhost:8545'))
@@ -64,7 +65,7 @@ def provide_data_every(n_seconds, web3):
         last_block_number = new_last_block_number
         node_data = gather_data(blocks_to_send, last_sent_block, web3)
         print(node_data)
-        send_data(node_data)
+        send_data(node_data) 
 
 
 def gather_data(blocks_to_send, last_sent_block, web3):
@@ -74,8 +75,8 @@ def gather_data(blocks_to_send, last_sent_block, web3):
     hash_rate = web3.eth.hashrate
     gas_price = web3.eth.gasPrice
     is_mining = 1 if web3.eth.mining else 0
-    node_data = {'hostId': host_id, 'hashrate': hash_rate, 'gasPrice': gas_price,
-                 'avgBlockDifficulty': avg_block_difficulty, "avgBlockTime": avg_block_time, "isMining": is_mining}
+    node_data = {"hostId": host_id, "hashrate": hash_rate, "gasPrice": gas_price,
+                 "avgBlockDifficulty": avg_block_difficulty, "avgBlockTime": avg_block_time, "isMining": is_mining}
     return node_data
 
 
@@ -98,7 +99,14 @@ def get_localhost_of_host():
 def send_data(node_data):
     try:
         hosts_localhost = get_localhost_of_host()
-        requests.post(hosts_localhost, json=node_data, headers={'content-type':'application/json'}, timeout = 1)
+        #requests.post(hosts_localhost, json=node_data, headers={'content-type':'application/json'}, timeout = 1)
+        ws = create_connection("ws://172.18.0.1:3030")
+        ws.send(json.dumps(node_data))
+        print("Sent")
+        print("Receiving...")
+        result =  ws.recv()
+        print("Received '%s'" % result)
+        ws.close()
     except requests.Timeout as e:
         print("Connection timed out this should happen because requests lib is strange")
         print("Request should have been sent")
