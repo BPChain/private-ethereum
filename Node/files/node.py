@@ -65,7 +65,7 @@ def provide_data_every(n_seconds, web3):
         last_block_number = new_last_block_number
         node_data = gather_data(blocks_to_send, last_sent_block, web3)
         print(node_data)
-        send_data(node_data) 
+        send_data(node_data)
 
 
 def gather_data(blocks_to_send, last_sent_block, web3):
@@ -98,8 +98,7 @@ def get_localhost_of_host():
 
 def send_data(node_data):
     try:
-        hosts_localhost = get_localhost_of_host()
-        #requests.post(hosts_localhost, json=node_data, headers={'content-type':'application/json'}, timeout = 1)
+        #hosts_localhost = get_localhost_of_host()
         ws = create_connection("ws://172.18.0.1:3030")
         ws.send(json.dumps(node_data))
         print("Sent")
