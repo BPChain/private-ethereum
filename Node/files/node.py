@@ -4,10 +4,7 @@
 
 import time
 from web3 import Web3, HTTPProvider
-import requests
-import netifaces as ni
 from functools import reduce
-import socket
 from websocket import create_connection
 import json
 
@@ -80,38 +77,14 @@ def gather_data(blocks_to_send, last_sent_block, web3):
     return node_data
 
 
-def get_localhost_of_host():
-    """Gets the platform dependent address which will be localhost on the host. So host can listen to localhost
-        and container can send to this address."""
-    try:
-        #test if we are on a mac. This will resolve only there
-        socket.gethostbyname('docker.for.mac.localhost')
-        hosts_localhost = 'http://docker.for.mac.localhost:3030'
-    except socket.gaierror:
-        #if on linux this will be the host on the bridge network.
-        ip = ni.ifaddresses('eth0')[ni.AF_INET][0]['addr']
-        split = ip.split('.')
-        server_ip = split[0] + '.' + split[1] + '.' + split[2] + '.' + '1'
-        hosts_localhost = 'http://' + server_ip + ':3030'
-    return hosts_localhost
-
-
 def send_data(node_data):
-    try:
-        #hosts_localhost = get_localhost_of_host()
-        ws = create_connection("ws://172.18.0.1:3030")
-        ws.send(json.dumps(node_data))
-        print("Sent")
-        print("Receiving...")
-        result =  ws.recv()
-        print("Received '%s'" % result)
-        ws.close()
-    except requests.Timeout as e:
-        print("Connection timed out this should happen because requests lib is strange")
-        print("Request should have been sent")
-    except requests.exceptions.RequestException as e:
-        print(e)
-        print('Could not establish connection')
+    ws = create_connection("ws://api-server:3030")
+    ws.send(json.dumps(node_data))
+    print("Sent")
+    print("Receiving...")
+    result = ws.recv()
+    print("Received '%s'" % result)
+    ws.close()
 
 
 if __name__ == "__main__":
