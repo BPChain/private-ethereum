@@ -6,7 +6,6 @@ ethereum-keys==0.1.0a7
 ethereum-tester==0.1.0b2
 ethereum-utils==0.6.0
 idna==2.6
-netifaces==0.10.6
 pylru==1.0.9
 pysha3==1.0.2
 requests==2.18.4
@@ -16,3 +15,4 @@ toolz==0.8.2
 urllib3==1.22
 web3==3.16.3
 websocket-client==0.44.0
+

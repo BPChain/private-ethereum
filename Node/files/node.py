@@ -15,10 +15,11 @@ def connect_to_blockchain():
     return web3
 
 
+
 def start_mining(web3):
     web3.miner.start(1)
 
-
+    
 def retrieve_new_blocks_since(number_of_last_sent_block, web3):
     """Gets the newly mined blocks since last send cycle"""
     new_blocks = []
@@ -64,7 +65,7 @@ def provide_data_every(n_seconds, web3):
         print(node_data)
         send_data(node_data)
 
-
+        
 def gather_data(blocks_to_send, last_sent_block, web3):
     avg_block_difficulty = calculate_avg_block_difficulty(blocks_to_send)
     avg_block_time = calculate_avg_block_time(blocks_to_send, last_sent_block)
@@ -92,3 +93,4 @@ if __name__ == "__main__":
     web3_connector = connect_to_blockchain()
     start_mining(web3_connector)
     provide_data_every(SEND_PERIOD, web3_connector)
+
