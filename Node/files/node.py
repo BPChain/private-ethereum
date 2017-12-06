@@ -74,7 +74,7 @@ def gather_data(blocks_to_send, last_sent_block, web3):
     gas_price = web3.eth.gasPrice
     is_mining = 1 if web3.eth.mining else 0
     node_data = {"hostId": host_id, "hashrate": hash_rate, "gasPrice": gas_price,
-                 "avgBlockDifficulty": avg_block_difficulty, "avgBlockTime": avg_block_time, "isMining": is_mining}
+                 "avgDifficulty": avg_block_difficulty, "avgBlocktime": avg_block_time, "isMining": is_mining}
     return node_data
 
 
