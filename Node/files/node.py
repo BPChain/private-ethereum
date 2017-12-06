@@ -37,7 +37,7 @@ def calculate_avg_block_difficulty(blocks_to_send):
     if not blocks_to_send:
         return 0
     else:
-        return reduce((lambda accum, block: accum + block.timestamp), blocks_to_send, 0) / len(blocks_to_send)
+        return reduce((lambda accum, block: accum + block.difficulty), blocks_to_send, 0) / len(blocks_to_send)
 
 
 def calculate_avg_block_time(blocks_to_send, last_sent_block):
