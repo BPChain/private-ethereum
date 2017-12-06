@@ -1,82 +1,96 @@
-import json
-import web3
-import time
-from web3 import Web3, HTTPProvider, TestRPCProvider
-import requests
+"""I read values from my local blockchain node by using the Web3 Library which uses the nodes RPC-API. Make sure the
+    required apis are unlocked in geth. I send the values I read to a server in a specified interval via a http post.
+    Important variables are SERVER_ADDRESS and SEND_PERIOD. The values I send can currently be seen in gather_data"""
 
+import time
+from web3 import Web3, HTTPProvider
+from functools import reduce
+from websocket import create_connection
+import json
 
 def connect_to_blockchain():
-    connected = False
-    while not connected:
-        try:
-            time.sleep(10)
-            web3 = Web3(HTTPProvider('http://localhost:8545'))
-            return web3
-        except Exception:
-            pass
-        connected = True
+    web3 = Web3(HTTPProvider('http://localhost:8545'))
+    while not web3.isConnected():
+        time.sleep(1)
+    return web3
+
 
 
 def start_mining(web3):
     web3.miner.start(1)
 
-
-# Gets the last mined blocks since last send cycle
-def retrieve_last_blocks(number_of_last_sent_block, web3):
-    last_blocks = []
+    
+def retrieve_new_blocks_since(number_of_last_sent_block, web3):
+    """Gets the newly mined blocks since last send cycle"""
+    new_blocks = []
     number_of_last_block = web3.eth.getBlock('latest').number
     if number_of_last_block > number_of_last_sent_block:
         number_of_blocks_to_send = number_of_last_block - number_of_last_sent_block
-        for i in range(0, number_of_blocks_to_send):
-            last_blocks.append(web3.eth.getBlock(number_of_last_block - i))
-        return(number_of_last_block, last_blocks)
+        for i in range(1, number_of_blocks_to_send + 1):
+            new_blocks.append(web3.eth.getBlock(number_of_last_sent_block + i))
+        return number_of_last_block, new_blocks
     else:
-        print("Nothing to send")
-        return(number_of_last_sent_block, last_blocks)
+        return number_of_last_sent_block, new_blocks
 
 
-# get the avg block difficulty of the current send cycle
 def calculate_avg_block_difficulty(blocks_to_send):
-    avg_block_difficulty = 0
-    if not blocks_to_send:  # checks if list is empty
-        return None
+    if not blocks_to_send:
+        return 0
     else:
-        for block in blocks_to_send:
-            print("Single Difficulty:")
-            print(block.totalDifficulty)
-            avg_block_difficulty += block.totalDifficulty
-        avg_block_difficulty = avg_block_difficulty / len(blocks_to_send)
-        return avg_block_difficulty
+        return reduce((lambda accum, block: accum + block.timestamp), blocks_to_send, 0) / len(blocks_to_send)
 
 
-def provide_data(web3):  # Loop, which runs on the nodes to get and send the data
-    number_of_last_sent_block = 0
+def calculate_avg_block_time(blocks_to_send, last_sent_block):
+    blocks_to_send = [last_sent_block] + blocks_to_send
+    #first block might be genesis block with timestamp 0. this has to be catched.
+    if len(blocks_to_send) == 1:
+        return 0
+    else:
+        if blocks_to_send[0] is None:
+            blocks_to_send.remove(None)
+        if len(blocks_to_send) == 1:
+            return 0
+        deltas = [next.timestamp - current.timestamp for current, next in zip(blocks_to_send, blocks_to_send[1:])]
+        return sum(deltas) / len(deltas)
+
+
+def provide_data_every(n_seconds, web3):
+    last_block_number = 0
     while True:
-        time.sleep(10)
-        retrieved_blocks = retrieve_last_blocks(number_of_last_sent_block, web3)
-        number_of_last_sent_block = retrieved_blocks[0]
-        blocks_to_send = retrieved_blocks[1]
-        avg_block_difficulty = calculate_avg_block_difficulty(blocks_to_send)
-        node_id = web3.admin.nodeInfo.id
-        hash_rate = web3.eth.hashrate
-        gas_price = web3.eth.gasPrice
-        node_data = {'node_id': node_id, 'hashrate': hash_rate, 'gas_price': gas_price, 'Avg Block difficulty': avg_block_difficulty}
+        time.sleep(n_seconds)
+        last_sent_block = web3.eth.getBlock(last_block_number) if last_block_number > 0 else None
+        new_last_block_number, blocks_to_send = retrieve_new_blocks_since(last_block_number, web3)
+        last_block_number = new_last_block_number
+        node_data = gather_data(blocks_to_send, last_sent_block, web3)
         print(node_data)
         send_data(node_data)
 
+        
+def gather_data(blocks_to_send, last_sent_block, web3):
+    avg_block_difficulty = calculate_avg_block_difficulty(blocks_to_send)
+    avg_block_time = calculate_avg_block_time(blocks_to_send, last_sent_block)
+    host_id = web3.admin.nodeInfo.id
+    hash_rate = web3.eth.hashrate
+    gas_price = web3.eth.gasPrice
+    is_mining = 1 if web3.eth.mining else 0
+    node_data = {"hostId": host_id, "hashrate": hash_rate, "gasPrice": gas_price,
+                 "avgBlockDifficulty": avg_block_difficulty, "avgBlockTime": avg_block_time, "isMining": is_mining}
+    return node_data
 
-def send_data(node_data):  # send the data to the server
-    try:
-        SERVER_ADRESS = 'http://localhost:3030'
-        requests.post(SERVER_ADRESS, data=node_data)
-        print("Request has been sent")
-    except Exception:
-        print("Connection has not been established")
-        pass
+
+def send_data(node_data):
+    ws = create_connection("ws://api-server:3030")
+    ws.send(json.dumps(node_data))
+    print("Sent")
+    print("Receiving...")
+    result = ws.recv()
+    print("Received '%s'" % result)
+    ws.close()
 
 
-
-
-    start_mining(web3)
-    provide_data(web3)
+if __name__ == "__main__":
+    SEND_PERIOD  = 10
+    web3_connector = connect_to_blockchain()
+    start_mining(web3_connector)
+    provide_data_every(SEND_PERIOD, web3_connector)
 
