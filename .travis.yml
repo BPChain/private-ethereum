@@ -8,8 +8,8 @@ before_script: cd Node/files
 # command to install dependencies
 install:
   - pip install -r ./Node/files/requirements.txt
-  - "pip install nose pylint"
+  - "pip install pylint"
 # command to run tests
 script:
   #- pytest # or py.test for Python versions 3.5 and below
-  - "nosetests && pylint
+  - pylint
