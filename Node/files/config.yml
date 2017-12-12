@@ -1,0 +1,4 @@
+networking:
+  socketProtocol: "ws://"
+  socketPort: "3030"
+  socketAdress: "api-server"
