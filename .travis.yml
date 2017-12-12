@@ -1,7 +1,9 @@
 language: python
 python:
   - "3.6"
-  - "3.7"
+sudo: enabled
+notifications:
+  email: false
 before_script: cd Node/files
 # command to install dependencies
 install:
