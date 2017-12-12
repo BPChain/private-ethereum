@@ -1,0 +1,15 @@
+language: python
+python:
+  - "3.6"
+sudo: enabled
+notifications:
+  email: false
+# command to install dependencies
+install:
+  - pip install -r ./Node/files/requirements.txt
+  - pip install pylint
+# command to run tests
+before_script: cd Node/files
+script:
+  #- pytest # or py.test for Python versions 3.5 and below
+  - pylint node.py
