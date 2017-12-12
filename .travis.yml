@@ -2,7 +2,7 @@ language: python
 python:
   - "3.6"
   - "3.7"
-before_script: cd Node
+before_script: cd Node/files
 # command to install dependencies
 install:
   - pip install -r requirements.txt
