@@ -15,4 +15,3 @@ toolz==0.8.2
 urllib3==1.22
 web3==3.16.3
 websocket-client==0.44.0
-
