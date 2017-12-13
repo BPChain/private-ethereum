@@ -43,6 +43,7 @@ def calculate_avg_block_difficulty(blocks_to_send):
 
 
 def calculate_avg_block_time(blocks_to_send, last_sent_block):
+    print(blocks_to_send)
     blocks_to_send = [last_sent_block] + blocks_to_send
     #first block might be genesis block with timestamp 0. this has to be catched.
     if len(blocks_to_send) == 1:
@@ -100,4 +101,7 @@ if __name__ == "__main__":
     SEND_PERIOD  = 10
     web3_connector = connect_to_blockchain()
     start_mining(web3_connector)
-    provide_data_every(SEND_PERIOD, web3_connector)
+    try:
+        provide_data_every(SEND_PERIOD, web3_connector)
+    except Exception:
+        pass
