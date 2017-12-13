@@ -83,25 +83,25 @@ def gather_data(blocks_to_send, last_sent_block, web3):
 
 
 def send_data_to(uri, node_data):
-    ws = create_connection(
-        uri['networking']['socketProtocol'] +
-        uri['networking']['socketAdress'] +
-        ":" +
-        uri['networking']['socketPort']
-    )
-    ws.send(json.dumps(node_data))
-    print("Sent")
-    print("Receiving...")
-    result = ws.recv()
-    print("Received '%s'" % result)
-    ws.close()
+    try:
+        ws = create_connection(
+            uri['networking']['socketProtocol'] +
+            uri['networking']['socketAdress'] +
+            ":" +
+            uri['networking']['socketPort']
+        )
+        ws.send(json.dumps(node_data))
+        print("Sent")
+        print("Receiving...")
+        result = ws.recv()
+        print("Received '%s'" % result)
+        ws.close()
+    except Exception:
+        pass
 
 
 if __name__ == "__main__":
     SEND_PERIOD  = 10
     web3_connector = connect_to_blockchain()
     start_mining(web3_connector)
-    try:
-        provide_data_every(SEND_PERIOD, web3_connector)
-    except Exception:
-        pass
+    provide_data_every(SEND_PERIOD, web3_connector)
