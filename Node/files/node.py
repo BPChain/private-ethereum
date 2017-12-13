@@ -43,7 +43,6 @@ def calculate_avg_block_difficulty(blocks_to_send):
 
 
 def calculate_avg_block_time(blocks_to_send, last_sent_block):
-    print(blocks_to_send)
     blocks_to_send = [last_sent_block] + blocks_to_send
     #first block might be genesis block with timestamp 0. this has to be catched.
     if len(blocks_to_send) == 1:
