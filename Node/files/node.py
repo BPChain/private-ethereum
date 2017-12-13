@@ -8,7 +8,7 @@ from functools import reduce
 from websocket import create_connection
 import json
 import yaml
-config = yaml.safe_load(open("/root/files/config.yml"))
+
 
 def connect_to_blockchain():
     web3 = Web3(HTTPProvider('http://localhost:8545'))
@@ -58,6 +58,7 @@ def calculate_avg_block_time(blocks_to_send, last_sent_block):
 
 def provide_data_every(n_seconds, web3):
     last_block_number = 0
+    uri = yaml.safe_load(open("/root/files/config.yml"))
     while True:
         time.sleep(n_seconds)
         last_sent_block = web3.eth.getBlock(last_block_number) if last_block_number > 0 else None
@@ -65,7 +66,7 @@ def provide_data_every(n_seconds, web3):
         last_block_number = new_last_block_number
         node_data = gather_data(blocks_to_send, last_sent_block, web3)
         print(node_data)
-        send_data(node_data)
+        send_data_to(uri, node_data)
 
 
 def gather_data(blocks_to_send, last_sent_block, web3):
@@ -80,12 +81,12 @@ def gather_data(blocks_to_send, last_sent_block, web3):
     return node_data
 
 
-def send_data(node_data):
+def send_data_to(uri, node_data):
     ws = create_connection(
-        config['networking']['socketProtocol'] +
-        config['networking']['socketAdress'] +
+        uri['networking']['socketProtocol'] +
+        uri['networking']['socketAdress'] +
         ":" +
-        config['networking']['socketPort']
+        uri['networking']['socketPort']
     )
     ws.send(json.dumps(node_data))
     print("Sent")
