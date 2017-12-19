@@ -1,3 +1,5 @@
+"I test the functionality provided by the node.py file."
+
 import pytest
 import sys
 
