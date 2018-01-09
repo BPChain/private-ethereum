@@ -8,10 +8,12 @@ import json
 import time
 import logging
 from functools import reduce
-from datetime import datetime
+
 import yaml
 from web3 import Web3, HTTPProvider
 from websocket import create_connection
+
+
 
 
 def connect_to_blockchain():
@@ -92,7 +94,7 @@ def send_data_to(uri, node_data):
             ":" +
             uri['networking']['socketPort']
         )
-        logging.info({"timestamp": datetime.now().strftime("%Y-%m-%d %H:%M:%S"), "message": "Connection established"})
+        logging.info({"message": "Connection established"})
         web_socket.send(json.dumps(node_data))
         print("Sent")
         print("Receiving...")
@@ -104,12 +106,12 @@ def send_data_to(uri, node_data):
     except Exception as e:
         print("Exception occured during sending: ")
         print(e)
-        logging.info({"timestamp": datetime.now().strftime("%Y-%m-%d %H:%M:%S"), "message": e})
+        logging.info({"message": e})
         pass
 
 
 if __name__ == "__main__":
-    logging.basicConfig(filename='private_ethereum.log', level=logging.DEBUG)
+    logging.basicConfig(filename='private_ethereum.log', level=logging.CRITICAL, format='%(asctime)s %(message)s')
     SEND_PERIOD = 10
     WEB3_CONNECTOR = connect_to_blockchain()
     start_mining(WEB3_CONNECTOR)
