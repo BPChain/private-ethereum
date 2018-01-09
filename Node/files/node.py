@@ -5,13 +5,13 @@
     The values I send can currently be seen in gather_data"""
 
 import json
-import time
 import logging
+import time
 from functools import reduce
 
 import yaml
 from web3 import Web3, HTTPProvider
-from websocket import create_connection
+from websocket import create_connection, WebSocket
 
 
 def connect_to_blockchain():
@@ -42,7 +42,8 @@ def calculate_avg_block_difficulty(blocks_to_send):
     if not blocks_to_send:
         return 0
     else:
-        return reduce((lambda accum, block: accum + block.difficulty), blocks_to_send, 0) / len(blocks_to_send)
+        return reduce((lambda accum, block: accum + block.difficulty), blocks_to_send, 0) / len(
+            blocks_to_send)
 
 
 def calculate_avg_block_time(blocks_to_send, last_sent_block):
@@ -55,7 +56,8 @@ def calculate_avg_block_time(blocks_to_send, last_sent_block):
             blocks_to_send.remove(None)
         if len(blocks_to_send) == 1:
             return 0
-        deltas = [next.timestamp - current.timestamp for current, next in zip(blocks_to_send, blocks_to_send[1:])]
+        deltas = [next.timestamp - current.timestamp for current, next in
+                  zip(blocks_to_send, blocks_to_send[1:])]
         return sum(deltas) / len(deltas)
 
 
@@ -80,37 +82,43 @@ def gather_data(blocks_to_send, last_sent_block, web3):
     gas_price = web3.eth.gasPrice
     is_mining = 1 if web3.eth.mining else 0
     node_data = {"hostId": host_id, "hashrate": hash_rate, "gasPrice": gas_price,
-                 "avgDifficulty": avg_block_difficulty, "avgBlocktime": avg_block_time, "isMining": is_mining}
+                 "avgDifficulty": avg_block_difficulty, "avgBlocktime": avg_block_time,
+                 "isMining": is_mining}
     return node_data
 
 
+def web_socket_for(uri) -> WebSocket:
+    timeout_in_seconds = 10
+    web_socket = create_connection(
+        uri['networking']['socketProtocol'] +
+        uri['networking']['socketAdress'] +
+        ":" +
+        uri['networking']['socketPort'], timeout_in_seconds
+    )
+    logging.critical({"message": "Connection established"})
+    return web_socket
+
+
 def send_data_to(uri, node_data):
-    connection_timeout = 10 # timeout in seconds
     try:
-        web_socket = create_connection(
-            uri['networking']['socketProtocol'] +
-            uri['networking']['socketAdress'] +
-            ":" +
-            uri['networking']['socketPort'], connection_timeout
-        )
-        logging.critical({"message": "Connection established"})
+        web_socket = web_socket_for(uri)
         web_socket.send(json.dumps(node_data))
-        print("Sent")
-        print("Receiving...")
+        print("Sent\nReceiving...")
         result = web_socket.recv()
         print("Received '%s'" % result)
+        logging.critical({"message": result})
         web_socket.close()
     # Not nice, but works for now.
     # pylint: disable=broad-except
     except Exception as exception:
-        print("Exception occured during sending: ")
+        print("Exception occurred during sending: ")
         print(exception)
         logging.critical({"message": exception})
-        pass
 
 
 if __name__ == "__main__":
-    logging.basicConfig(filename='private_ethereum.log', level=logging.CRITICAL, format='%(asctime)s %(message)s')
+    logging.basicConfig(filename='private_ethereum.log', level=logging.CRITICAL,
+                        format='%(asctime)s %(message)s')
     SEND_PERIOD = 10
     WEB3_CONNECTOR = connect_to_blockchain()
     start_mining(WEB3_CONNECTOR)
