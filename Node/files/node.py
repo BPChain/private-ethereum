@@ -99,8 +99,8 @@ def send_data_to(uri, node_data):
         web_socket.close()
     # Not nice, but works for now.
     # pylint: disable=broad-except
-    except Exception:
-        print(Exception)
+    except Exception as e:
+        print(e)
         pass
 
 
