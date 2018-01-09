@@ -14,8 +14,6 @@ from web3 import Web3, HTTPProvider
 from websocket import create_connection
 
 
-
-
 def connect_to_blockchain():
     web3 = Web3(HTTPProvider('http://localhost:8545'))
     while not web3.isConnected():
@@ -103,10 +101,10 @@ def send_data_to(uri, node_data):
         web_socket.close()
     # Not nice, but works for now.
     # pylint: disable=broad-except
-    except Exception as e:
+    except Exception as exception:
         print("Exception occured during sending: ")
-        print(e)
-        logging.info({"message": e})
+        print(exception)
+        logging.info({"message": exception})
         pass
 
 
