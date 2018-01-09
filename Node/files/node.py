@@ -1,13 +1,16 @@
-"""I read values from my local blockchain node by using the Web3 Library which uses the nodes RPC-API. Make sure the
-    required apis are unlocked in geth. I send the values I read to a server in a specified interval via a http post.
-    Important variables are SERVER_ADDRESS and SEND_PERIOD. The values I send can currently be seen in gather_data"""
+""" I read values from my local blockchain node by using the Web3 Library which uses the nodes
+    RPC-API.
+    Make sure the required apis are unlocked in geth. I send the values I read to a server in a
+    specified interval via a http post. Important variables are SERVER_ADDRESS and SEND_PERIOD.
+    The values I send can currently be seen in gather_data"""
 
-import time
-from web3 import Web3, HTTPProvider
-from functools import reduce
-from websocket import create_connection
 import json
+import time
+from functools import reduce
+
 import yaml
+from web3 import Web3, HTTPProvider
+from websocket import create_connection
 
 
 def connect_to_blockchain():
@@ -15,7 +18,6 @@ def connect_to_blockchain():
     while not web3.isConnected():
         time.sleep(1)
     return web3
-
 
 
 def start_mining(web3):
@@ -44,7 +46,7 @@ def calculate_avg_block_difficulty(blocks_to_send):
 
 def calculate_avg_block_time(blocks_to_send, last_sent_block):
     blocks_to_send = [last_sent_block] + blocks_to_send
-    #first block might be genesis block with timestamp 0. this has to be catched.
+    # first block might be genesis block with timestamp 0. this has to be catched.
     if len(blocks_to_send) == 1:
         return 0
     else:
@@ -83,24 +85,26 @@ def gather_data(blocks_to_send, last_sent_block, web3):
 
 def send_data_to(uri, node_data):
     try:
-        ws = create_connection(
+        web_socket = create_connection(
             uri['networking']['socketProtocol'] +
             uri['networking']['socketAdress'] +
             ":" +
             uri['networking']['socketPort']
         )
-        ws.send(json.dumps(node_data))
+        web_socket.send(json.dumps(node_data))
         print("Sent")
         print("Receiving...")
-        result = ws.recv()
+        result = web_socket.recv()
         print("Received '%s'" % result)
-        ws.close()
+        web_socket.close()
+    # Not nice, but works for now.
+    # pylint: disable=broad-except
     except Exception:
         pass
 
 
 if __name__ == "__main__":
-    SEND_PERIOD  = 10
-    web3_connector = connect_to_blockchain()
-    start_mining(web3_connector)
-    provide_data_every(SEND_PERIOD, web3_connector)
+    SEND_PERIOD = 10
+    WEB3_CONNECTOR = connect_to_blockchain()
+    start_mining(WEB3_CONNECTOR)
+    provide_data_every(SEND_PERIOD, WEB3_CONNECTOR)
