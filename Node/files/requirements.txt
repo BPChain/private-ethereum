@@ -5,12 +5,17 @@ ethereum-abi-utils==0.4.4
 ethereum-keys==0.1.0a7
 ethereum-tester==0.1.0b2
 ethereum-utils==0.6.0
+gevent==1.2.2
+greenlet==0.4.12
 idna==2.6
+netifaces==0.10.6
 pylru==1.0.9
 pysha3==1.0.2
+PyYAML==3.12
 requests==2.18.4
 rlp==0.6.0
 semantic-version==2.6.0
+six==1.11.0
 toolz==0.8.2
 urllib3==1.22
 web3==3.16.3
