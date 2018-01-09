@@ -6,10 +6,11 @@ notifications:
   email: false
 # command to install dependencies
 install:
-  - pip install -r ./Node/files/requirements.txt
+  - pip install -r requirements.txt
   - pip install pylint
 # command to run tests
-before_script: cd Node/files
 script:
-  #- pytest # or py.test for Python versions 3.5 and below
-  - pylint node.py
+  - ls
+  - pytest # or py.test for Python versions 3.5 and below
+  - pylint Node/files
+  - pylint Node/tests
