@@ -85,12 +85,13 @@ def gather_data(blocks_to_send, last_sent_block, web3):
 
 
 def send_data_to(uri, node_data):
+    connection_timeout = 10 # timeout in seconds
     try:
         web_socket = create_connection(
             uri['networking']['socketProtocol'] +
             uri['networking']['socketAdress'] +
             ":" +
-            uri['networking']['socketPort'], 10
+            uri['networking']['socketPort'], connection_timeout
         )
         logging.critical({"message": "Connection established"})
         web_socket.send(json.dumps(node_data))
