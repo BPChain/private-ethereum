@@ -102,7 +102,7 @@ def send_data_to(uri, node_data):
     # Not nice, but works for now.
     # pylint: disable=broad-except
     except Exception as e:
-        print(e)
+        print("Exception occured during sending: " + e)
         logging.info({"timestamp": datetime.now().strftime("%Y-%m-%d %H:%M:%S"), "message": e})
         pass
 
