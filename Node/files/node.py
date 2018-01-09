@@ -92,7 +92,7 @@ def send_data_to(uri, node_data):
             ":" +
             uri['networking']['socketPort']
         )
-        logging.info({"message": "Connection established"})
+        logging.critical({"message": "Connection established"})
         web_socket.send(json.dumps(node_data))
         print("Sent")
         print("Receiving...")
@@ -104,7 +104,7 @@ def send_data_to(uri, node_data):
     except Exception as exception:
         print("Exception occured during sending: ")
         print(exception)
-        logging.info({"message": exception})
+        logging.critical({"message": exception})
         pass
 
 
