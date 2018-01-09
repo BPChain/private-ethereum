@@ -1,11 +1,8 @@
 "I test the functionality provided by the node.py file."
 
-import pytest
-import sys
-
-sys.path.insert(0, 'files')
-import node
 from attrdict import AttrDict
+
+from Node.files import node
 
 last_sent_block = AttrDict({'blockId': '0', 'difficulty': 2.0, 'timestamp': 1})
 blocks = [AttrDict({'blockId': '1', 'difficulty': 2.0, 'timestamp': 2}),
