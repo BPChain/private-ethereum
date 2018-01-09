@@ -100,6 +100,7 @@ def send_data_to(uri, node_data):
     # Not nice, but works for now.
     # pylint: disable=broad-except
     except Exception:
+        print(Exception)
         pass
 
 
