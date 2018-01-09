@@ -90,7 +90,7 @@ def send_data_to(uri, node_data):
             uri['networking']['socketProtocol'] +
             uri['networking']['socketAdress'] +
             ":" +
-            uri['networking']['socketPort']
+            uri['networking']['socketPort'], 10
         )
         logging.critical({"message": "Connection established"})
         web_socket.send(json.dumps(node_data))
