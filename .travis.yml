@@ -14,6 +14,7 @@ script:
   - ls -a
   - pylint Node/files
   - pylint Node/tests
-  - coverage run --source=home pytest test home
+  - coverage run py.test
+  - coverage report -m
 after_success:
   - coveralls
