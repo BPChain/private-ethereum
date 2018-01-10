@@ -1,0 +1,21 @@
+language: python
+python:
+  - "3.6"
+sudo: enabled
+notifications:
+  email: false
+# command to install dependencies
+install:
+  - pip install -r requirements.txt
+  - pip install pylint
+  - pip install coveralls
+# command to test
+script:
+  - ls
+  - pylint Node/files
+  - pylint Node/tests
+  - pytest
+  - coverage run -m pytest
+  - coverage report -m --include="Node/*"
+after_success:
+  - coveralls
