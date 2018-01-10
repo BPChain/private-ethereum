@@ -71,7 +71,7 @@ def provide_data_every(n_seconds, web3):
         last_block_number = new_last_block_number
         node_data = gather_data(blocks_to_send, last_sent_block, web3)
         print(node_data)
-        send_data_to(uri, node_data)
+        send_data(node_data)
 
 
 def gather_data(blocks_to_send, last_sent_block, web3):
@@ -87,7 +87,8 @@ def gather_data(blocks_to_send, last_sent_block, web3):
     return node_data
 
 
-def web_socket_for(uri) -> WebSocket:
+def create_web_socket() -> WebSocket:
+    uri = yaml.safe_load(open("/root/files/config.yml"))
     timeout_in_seconds = 10
     web_socket = create_connection(
         uri['networking']['socketProtocol'] +
@@ -98,9 +99,9 @@ def web_socket_for(uri) -> WebSocket:
     return web_socket
 
 
-def send_data_to(uri, node_data):
+def send_data(node_data):
     try:
-        web_socket = web_socket_for(uri)
+        web_socket = create_web_socket()
         web_socket.send(json.dumps(node_data))
         print("Sent\nReceiving...")
         result = web_socket.recv()
