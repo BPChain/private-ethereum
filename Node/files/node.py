@@ -91,9 +91,8 @@ def web_socket_for(uri) -> WebSocket:
     timeout_in_seconds = 10
     web_socket = create_connection(
         uri['networking']['socketProtocol'] +
-        uri['networking']['socketAdress'] +
-        ":" +
-        uri['networking']['socketPort'], timeout_in_seconds
+        uri['networking']['socketAdress'],
+        timeout_in_seconds
     )
     logging.critical({"message": "Connection established"})
     return web_socket
