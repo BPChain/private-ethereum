@@ -16,7 +16,8 @@ from websocket import create_connection, WebSocket
 
 
 def connect_to_blockchain():
-    web3 = Web3(HTTPProvider('http://localhost:8545', request_kwargs={'timeout': 120}))
+    web3 = Web3(HTTPProvider('http://localhost:8545',
+                             request_kwargs={'timeout': 120}))
     while not web3.isConnected():
         time.sleep(1)
     return web3
@@ -75,8 +76,10 @@ def provide_data_every(n_seconds, web3):
 
 
 def provide_data(last_block_number, web3):
-    last_sent_block = web3.eth.getBlock(last_block_number) if last_block_number > 0 else None
-    new_last_block_number, blocks_to_send = retrieve_new_blocks_since(last_block_number, web3)
+    last_sent_block = web3.eth.getBlock(
+        last_block_number) if last_block_number > 0 else None
+    new_last_block_number, blocks_to_send = retrieve_new_blocks_since(
+        last_block_number, web3)
     last_block_number = new_last_block_number
     node_data = gather_data(blocks_to_send, last_sent_block, web3)
     print(node_data)
