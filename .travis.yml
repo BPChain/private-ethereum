@@ -16,6 +16,6 @@ script:
   - pylint Node/tests
   - pytest
   - coverage run -m pytest
-  - coverage report -m --omit="*/travis/*"
+  - coverage report -m --include="Node/*"
 after_success:
   - coveralls
