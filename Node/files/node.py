@@ -63,7 +63,6 @@ def calculate_avg_block_time(blocks_to_send, last_sent_block):
 
 def provide_data_every(n_seconds, web3):
     last_block_number = 0
-    uri = yaml.safe_load(open("/root/files/config.yml"))
     while True:
         time.sleep(n_seconds)
         last_sent_block = web3.eth.getBlock(last_block_number) if last_block_number > 0 else None
