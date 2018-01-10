@@ -14,7 +14,7 @@ script:
   - ls
   - pylint Node/files
   - pylint Node/tests
-  - python Node.node_test.py
-  - coverage run --source=home Node.node_test.py test home
+  - python Node.files.node_test.py
+  - coverage run --source=home Node.files.node_test.py test home
 after_success:
   - coveralls
