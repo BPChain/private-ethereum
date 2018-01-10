@@ -12,10 +12,9 @@ install:
 # command to test
 script:
   - ls
-  - pylint Node/
   - pylint Node/files
   - pylint Node/tests
-  - python Node/tests/node_test.py
-  - coverage run --source=home Node/tests/node_test.py test home
+  - python Node.node_test.py
+  - coverage run --source=home Node.node_test.py test home
 after_success:
   - coveralls
