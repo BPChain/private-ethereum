@@ -8,9 +8,14 @@ notifications:
 install:
   - pip install -r requirements.txt
   - pip install pylint
-# command to run tests
+  - pip install coveralls
+# command to test
 script:
   - ls
-  - pytest # or py.test for Python versions 3.5 and below
   - pylint Node/files
   - pylint Node/tests
+  - pytest
+  - coverage run -m pytest
+  - coverage report -m --include="Node/*"
+after_success:
+  - coveralls
