@@ -132,7 +132,7 @@ def send_data(node_data):
 
 def setup_logging():
     process = subprocess.Popen("hostname", stdout=subprocess.PIPE, shell=True)
-    output, error = process.communicate()
+    output, _ = process.communicate()
     logging.basicConfig(filename='/logging/' + output + '_private_ethereum.log', level=logging.CRITICAL,
                         format='%(asctime)s %(message)s')
 
