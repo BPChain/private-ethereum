@@ -3,8 +3,6 @@ version: '2'
 volumes:
   nvidia_driver_375.51:
     external: true
-  /home/jonas.cremerius/logging:
-    external: true
 
 services:
   bootstrap:

@@ -8,6 +8,7 @@
 import json
 import logging
 import time
+import subprocess
 from functools import reduce
 
 import yaml
@@ -129,10 +130,15 @@ def send_data(node_data):
         logging.critical({"message": exception})
 
 
+def setup_logging():
+    process = subprocess.Popen("hostname", stdout=subprocess.PIPE, shell=True)
+    output, error = process.communicate()
+    logging.basicConfig(filename='/logging/' + output + '_private_ethereum.log', level=logging.CRITICAL,
+                        format='%(asctime)s %(message)s')
+
 if __name__ == "__main__":
     SEND_PERIOD = 10
     WEB3_CONNECTOR = connect_to_blockchain()
-    logging.basicConfig(filename='/logging/' + WEB3_CONNECTOR.admin.nodeInfo.id + '_private_ethereum.log', level=logging.CRITICAL,
-                        format='%(asctime)s %(message)s')
+    setup_logging()
     start_mining(WEB3_CONNECTOR)
     provide_data_every(SEND_PERIOD, WEB3_CONNECTOR)
