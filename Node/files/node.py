@@ -133,12 +133,18 @@ def send_data(node_data):
 def setup_logging():
     process = subprocess.Popen("hostname", stdout=subprocess.PIPE, shell=True)
     output, _ = process.communicate()
-    logging.basicConfig(filename='/logging/' + output + '_private_ethereum.log', level=logging.CRITICAL,
+    logging.basicConfig(filename='/logging/' + output + '_private_ethereum.log',
+                        level=logging.CRITICAL,
                         format='%(asctime)s %(message)s')
 
-if __name__ == "__main__":
-    SEND_PERIOD = 10
-    WEB3_CONNECTOR = connect_to_blockchain()
+
+def main():
+    send_period = 10
+    web3_connector = connect_to_blockchain()
     setup_logging()
-    start_mining(WEB3_CONNECTOR)
-    provide_data_every(SEND_PERIOD, WEB3_CONNECTOR)
+    start_mining(web3_connector)
+    provide_data_every(send_period, web3_connector)
+
+
+if __name__ == "__main__":
+    main()
