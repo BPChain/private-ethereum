@@ -20,6 +20,7 @@ services:
     build: .
     volumes:
       - nvidia_driver_375.51:/usr/local/nvidia:ro
+      - logging:~/logging:rw
     devices:
       - /dev/nvidia0:/dev/nvidia0
       - /dev/nvidia1:/dev/nvidia1

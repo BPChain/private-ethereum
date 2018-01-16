@@ -130,9 +130,9 @@ def send_data(node_data):
 
 
 if __name__ == "__main__":
-    logging.basicConfig(filename='private_ethereum.log', level=logging.CRITICAL,
-                        format='%(asctime)s %(message)s')
     SEND_PERIOD = 10
     WEB3_CONNECTOR = connect_to_blockchain()
+    logging.basicConfig(filename='~/logging/' + WEB3_CONNECTOR.admin.nodeInfo.id + '_private_ethereum.log', level=logging.CRITICAL,
+                        format='%(asctime)s %(message)s')
     start_mining(WEB3_CONNECTOR)
     provide_data_every(SEND_PERIOD, WEB3_CONNECTOR)
