@@ -24,4 +24,18 @@ Remove all docker nodes: ``docker ps -aq --filter name=eth_node | xargs docker r
 
 Show current docker log: ``docker-compose logs -f --tail=0``
 
+Solving the service endpoint already connected issue: 
 
+``for i in ` docker network inspect -f '{{range .Containers}}{{.Name}} {{end}}' backendnet`;\
+  do \
+     docker network disconnect -f backendnet $i; \
+  done;
+  ``
+  
+  This disconnects all eth_node docker images from the network
+  
+  ### Geth:
+  
+  Connecting to the geth console when connected to the terminal of a single node:
+  
+  ``geth attach ipc:/root/.ethereum/devchain/geth.ipc``
