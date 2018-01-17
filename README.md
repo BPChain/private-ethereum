@@ -1,5 +1,9 @@
 # Data aggregator
 
+Master-Branch: [![Build Status](https://travis-ci.org/BPChain/data-aggregator.svg?branch=master)](https://travis-ci.org/BPChain/data-aggregator) [![Coverage Status](https://coveralls.io/repos/github/BPChain/data-aggregator/badge.svg?branch=master)](https://coveralls.io/github/BPChain/data-aggregator?branch=master) <br />
+Dev-Branch: [![Build Status](https://travis-ci.org/BPChain/data-aggregator.svg?branch=dev)](https://travis-ci.org/BPChain/data-aggregator) [![Coverage Status](https://coveralls.io/repos/github/BPChain/data-aggregator/badge.svg?branch=dev)](https://coveralls.io/github/BPChain/data-aggregator?branch=dev) <br />
+
+
 This is the blockchain backend, which interconnects several hosts to participate in a blockchain. Each host sends its statistics eg. hashrate to a server which is not implemented here.
 Therefore this repository includes the python scripts which run on the host and the blockchain definition data which are used to create the blockchain.
 
@@ -24,6 +28,7 @@ Remove all docker nodes: ``docker ps -aq --filter name=eth_node | xargs docker r
 
 Show current docker log: ``docker-compose logs -f --tail=0``
 
+
 Solving the service endpoint already connected issue: 
 
 ``for i in ` docker network inspect -f '{{range .Containers}}{{.Name}} {{end}}' backendnet`;\
@@ -39,3 +44,4 @@ Solving the service endpoint already connected issue:
   Connecting to the geth console when connected to the terminal of a single node:
   
   ``geth attach ipc:/root/.ethereum/devchain/geth.ipc``
+
