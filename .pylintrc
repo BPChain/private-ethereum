@@ -392,7 +392,14 @@ good-names=i,
            k,
            ex,
            Run,
-           _
+           _,
+           getBlock,
+           test_provide_data_for_first_block,
+           test_avg_block_time_no_new_blocks,
+           test_avg_difficulty_only_one_block,
+           test_retrieve_new_blocks_no_new_blocks
+
+
 
 # Include a hint for the correct naming format with invalid-name
 include-naming-hint=no

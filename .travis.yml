@@ -11,9 +11,8 @@ install:
   - pip install coveralls
 # command to test
 script:
-  - ls
   - pylint Node/files
-  - pylint Node/tests
+  - pylint Node/test
   - pytest
   - coverage run -m pytest
   - coverage report -m --include="Node/*"
