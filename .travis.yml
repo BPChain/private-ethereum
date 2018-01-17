@@ -12,7 +12,7 @@ install:
 # command to test
 script:
   - pylint Node/files
-  - pylint Node/test
+  - pylint Node/tests
   - pytest
   - coverage run -m pytest
   - coverage report -m --include="Node/*"
