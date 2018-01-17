@@ -50,18 +50,13 @@ def calculate_avg_block_difficulty(blocks_to_send):
 
 
 def calculate_avg_block_time(blocks_to_send, last_sent_block):
-    blocks_to_send = [last_sent_block] + blocks_to_send
     # first block might be genesis block with timestamp 0. this has to be catched.
-    if len(blocks_to_send) == 1:
+    if last_sent_block is None or not blocks_to_send:
         return 0
-    else:
-        if blocks_to_send[0] is None:
-            blocks_to_send.remove(None)
-        if len(blocks_to_send) == 1:
-            return 0
-        deltas = [next.timestamp - current.timestamp for current, next in
-                  zip(blocks_to_send, blocks_to_send[1:])]
-        return sum(deltas) / len(deltas)
+    blocks_to_send = [last_sent_block] + blocks_to_send
+    deltas = [next.timestamp - current.timestamp for current, next in zip(blocks_to_send,
+                                                                          blocks_to_send[1:])]
+    return sum(deltas) / len(deltas)
 
 
 def provide_data_every(n_seconds, web3):
