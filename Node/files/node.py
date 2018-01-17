@@ -65,11 +65,18 @@ def calculate_avg_block_time(blocks_to_send, last_sent_block):
 
 
 def provide_data_every(n_seconds, web3):
-    last_block_number = 0
+    old_last_block_number = 0
+    old_node_data = {"avgDifficulty": 0, "avgBlocktime": 0}
     while True:
         time.sleep(n_seconds)
         try:
-            last_block_number = provide_data(last_block_number, web3)
+            new_last_block_number, node_data = provide_data(old_last_block_number, web3)
+            if new_last_block_number == old_last_block_number or old_last_block_number == 0:
+                node_data["avgDifficulty"] = old_node_data["avgDifficulty"]
+                node_data["avgBlocktime"] = old_node_data["avgBlocktime"]
+            old_node_data = node_data
+            old_last_block_number = new_last_block_number
+            send_data(node_data)
         # pylint: disable=broad-except
         except Exception as exception:
             print("During providing Data an error occurred: '%s'" % exception)
@@ -84,8 +91,7 @@ def provide_data(last_block_number, web3):
     last_block_number = new_last_block_number
     node_data = gather_data(blocks_to_send, last_sent_block, web3)
     print(node_data)
-    send_data(node_data)
-    return last_block_number
+    return last_block_number, node_data
 
 
 def gather_data(blocks_to_send, last_sent_block, web3):
