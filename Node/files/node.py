@@ -50,45 +50,43 @@ def calculate_avg_block_difficulty(blocks_to_send):
 
 
 def calculate_avg_block_time(blocks_to_send, last_sent_block):
-    blocks_to_send = [last_sent_block] + blocks_to_send
     # first block might be genesis block with timestamp 0. this has to be catched.
-    if len(blocks_to_send) == 1:
+    if last_sent_block is None or not blocks_to_send:
         return 0
-    else:
-        if blocks_to_send[0] is None:
-            blocks_to_send.remove(None)
-        if len(blocks_to_send) == 1:
-            return 0
-        deltas = [next.timestamp - current.timestamp for current, next in
-                  zip(blocks_to_send, blocks_to_send[1:])]
-        return sum(deltas) / len(deltas)
+    blocks_to_send = [last_sent_block] + blocks_to_send
+    deltas = [next.timestamp - current.timestamp for current, next in zip(blocks_to_send,
+                                                                          blocks_to_send[1:])]
+    return sum(deltas) / len(deltas)
 
 
 def provide_data_every(n_seconds, web3):
-    last_block_number = 0
+    number_of_last_block = 0
+    node_data = {"avgDifficulty": 0, "avgBlocktime": 0}
     while True:
         time.sleep(n_seconds)
         try:
-            last_block_number = provide_data(last_block_number, web3)
+            number_of_last_block, node_data = provide_data(number_of_last_block, node_data, web3)
+            send_data(node_data)
         # pylint: disable=broad-except
         except Exception as exception:
             print("During providing Data an error occurred: '%s'" % exception)
             logging.critical({"message": exception})
 
 
-def provide_data(last_block_number, web3):
-    last_sent_block = web3.eth.getBlock(
-        last_block_number) if last_block_number > 0 else None
-    new_last_block_number, blocks_to_send = retrieve_new_blocks_since(
-        last_block_number, web3)
-    last_block_number = new_last_block_number
-    node_data = gather_data(blocks_to_send, last_sent_block, web3)
+def provide_data(last_block_number, old_node_data, web3):
+    last_sent_block = web3.eth.getBlock(last_block_number) if last_block_number > 0 else None
+    new_last_block_number, blocks_to_send = retrieve_new_blocks_since(last_block_number, web3)
+    node_data = get_node_data(blocks_to_send, last_sent_block, web3)
+    if new_last_block_number == last_block_number or last_block_number == 0:
+        node_data["avgDifficulty"] = old_node_data["avgDifficulty"]
+        node_data["avgBlocktime"] = old_node_data["avgBlocktime"]
+        logging.critical({"message": 'Old averages where used'})
     print(node_data)
-    send_data(node_data)
-    return last_block_number
+    last_block_number = new_last_block_number
+    return last_block_number, node_data
 
 
-def gather_data(blocks_to_send, last_sent_block, web3):
+def get_node_data(blocks_to_send, last_sent_block, web3):
     avg_block_difficulty = calculate_avg_block_difficulty(blocks_to_send)
     avg_block_time = calculate_avg_block_time(blocks_to_send, last_sent_block)
     host_id = web3.admin.nodeInfo.id
