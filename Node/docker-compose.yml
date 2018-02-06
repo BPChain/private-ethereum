@@ -1,9 +1,5 @@
 version: '2'
 
-volumes:
-  nvidia_driver_375.51:
-    external: true
-
 services:
   bootstrap:
     build: .
@@ -20,13 +16,7 @@ services:
   eth_node:
     build: .
     volumes:
-      - nvidia_driver_375.51:/usr/local/nvidia:ro
       - /home/${USER}/logging:/logging:rw
-    devices:
-      - /dev/nvidia0:/dev/nvidia0
-      - /dev/nvidia1:/dev/nvidia1
-      - /dev/nvidiactl:/dev/nvidiactl
-      - /dev/nvidia-uvm:/dev/nvidia-uvm
     entrypoint: /root/files/start_eth_node.sh
     networks:
       - backendnet
@@ -37,13 +27,7 @@ services:
   eth_lazy:
     build: .
     volumes:
-      - nvidia_driver_375.51:/usr/local/nvidia:ro
       - /home/${USER}/logging:/logging:rw
-    devices:
-      - /dev/nvidia0:/dev/nvidia0
-      - /dev/nvidia1:/dev/nvidia1
-      - /dev/nvidiactl:/dev/nvidiactl
-      - /dev/nvidia-uvm:/dev/nvidia-uvm
     entrypoint: /root/files/start_eth_node.sh
     networks:
       - backendnet
