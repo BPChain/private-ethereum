@@ -1,5 +1,5 @@
 pragma solidity ^0.4.17;
-contract User {
+contract EVAPCoin {
 
     mapping(address => uint256) allUser;
     mapping(address => string) roles;
@@ -7,7 +7,7 @@ contract User {
     address master;
 
 
-    function User() public {
+    function EVAPCoin() public {
         allUser[msg.sender] = 0;
         roles[msg.sender] = 'master';
         master = msg.sender;

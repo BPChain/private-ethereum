@@ -1,5 +1,5 @@
-var User = artifacts.require("./EVAPCoin.sol");
+var User = artifacts.require("../contracts/EVAPCoin.sol");
 
 module.exports = function(deployer) {
-  deployer.deploy(User);;
+  deployer.deploy(User);
 };
