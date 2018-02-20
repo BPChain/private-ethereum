@@ -27,7 +27,7 @@ def connect_to_blockchain():
 def start_mining(web3):
     web3.miner.start(1)
 
-def unlockAccount(web3):
+def unlock_account(web3):
     web3.personal.unlockAccount(web3.eth.accounts[0], "123", 0)
 
 def retrieve_new_blocks_since(number_of_last_sent_block, web3):
@@ -142,7 +142,7 @@ def main():
     send_period = 10
     web3_connector = connect_to_blockchain()
     setup_logging()
-    unlockAccount(web3_connector)
+    unlock_account(web3_connector)
     start_mining(web3_connector)
     provide_data_every(send_period, web3_connector)
 
