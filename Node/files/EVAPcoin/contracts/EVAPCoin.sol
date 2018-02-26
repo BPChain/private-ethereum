@@ -59,11 +59,11 @@ contract EVAPCoin {
         equal = keccak256(_a) == keccak256(_b);
     }
 
-    function printAddress() public returns (address self){
+    function printAddress() public constant returns (address self){
     self = msg.sender;
     }
 
-    function printRole() public returns(string role) {
+    function printRole() public constant returns(string role) {
     role = roles[msg.sender];
     }
 
