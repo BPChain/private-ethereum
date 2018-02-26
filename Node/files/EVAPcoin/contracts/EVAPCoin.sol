@@ -26,7 +26,8 @@ contract EVAPCoin {
         success = true;
     }
 
-    function registerAsStudent() public hasRole("") returns (bool success) {
+
+    function registerAsStudent() public returns (bool success) {
         roles[msg.sender] = 'student';
     }
 
