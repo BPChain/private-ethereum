@@ -1,4 +1,4 @@
-var EVAPCoin = require("./attachToContract")(process.argv[2])
+var EVAPCoin = require("./attachToContract")(process.argv[4], web3)
 var receiver = "0xca247d7425a29c6645fa991f9151f994a830882d"
 var value = 1
 module.exports = function (callback) {
