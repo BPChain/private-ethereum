@@ -63,6 +63,10 @@ contract EVAPCoin {
     self = msg.sender;
     }
 
+    function printRole() returns(string role) {
+    role = roles[msg.sender];
+    }
+
     modifier hasRole (string role) {
         if (stringCompare(roles[msg.sender], role) || stringCompare(roles[msg.sender], "master")) {
             _;
