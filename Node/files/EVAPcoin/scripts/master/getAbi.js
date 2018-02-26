@@ -6,6 +6,6 @@ module.exports = function (callback) {
         evap = instance;
         return evap.abi;
         }).then(function (result) {
-        console.log(result);
+        console.log(JSON.stringify(result));
         });
 }
