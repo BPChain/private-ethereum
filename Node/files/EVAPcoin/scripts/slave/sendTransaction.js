@@ -2,9 +2,9 @@ var abi = '[{"inputs":[],"payable":false,"stateMutability":"nonpayable","type":"
 abi = JSON.parse(abi);
 var EVAPCoin =
 web3.eth.contract(abi).at("0xed76a0a6cc46efe20cf6f71c17b6ef7e178b01ac");
-
+var receiver = "0xca247d7425a29c6645fa991f9151f994a830882d"
+var value = 1
 module.exports = function (callback) {
-
-    console.log(EVAPCoin.myBalance());
-    console.log(EVAPCoin.generate(2));
+    var result = EVAPCoin.transfer(receiver, value);
+    console.log(result)
 }
