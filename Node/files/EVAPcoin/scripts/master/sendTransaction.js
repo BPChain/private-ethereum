@@ -1,6 +1,6 @@
 var EVAPCoin = artifacts.require("./EVAPCoin.sol");
-var receiver = "0xca247d7425a29c6645fa991f9151f994a830882d"
-var value = 1
+var receiver = process.argv[5];
+var value = process.argv[6];
 module.exports = function (callback) {
     var evap;
     EVAPCoin.deployed().then(function (instance) {
