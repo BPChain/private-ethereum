@@ -13,7 +13,7 @@ contract EVAPCoin {
         master = msg.sender;
     }
 
-    function balanceOf(address _owner) private constant returns (uint256 balance){
+    function balanceOf(address _owner) public constant returns (uint256 balance){
         balance = allUser[_owner];
     }
 
@@ -57,6 +57,10 @@ contract EVAPCoin {
 
     function stringCompare(string _a, string _b) private returns (bool equal) {
         equal = keccak256(_a) == keccak256(_b);
+    }
+
+    function printAddress() returns (address self){
+    self = msg.sender;
     }
 
     modifier hasRole (string role) {
