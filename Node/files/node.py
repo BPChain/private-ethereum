@@ -93,7 +93,8 @@ def get_node_data(blocks_to_send, last_sent_block, web3):
     hash_rate = web3.eth.hashrate
     gas_price = web3.eth.gasPrice
     is_mining = 1 if web3.eth.mining else 0
-    node_data = {"chain": "ethereum", "hostId": host_id, "hashrate": hash_rate, "gasPrice": gas_price,
+    node_data = {"chainName": "ethereum", "hostId": host_id, "hashrate": hash_rate,
+                 "gasPrice": gas_price,
                  "avgDifficulty": avg_block_difficulty, "avgBlocktime": avg_block_time,
                  "isMining": is_mining}
     return node_data
