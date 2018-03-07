@@ -5,8 +5,8 @@ const EVAPCoin = artifacts.require("../contracts/EVAPCoin.sol");
 
 module.exports = function(deployer) {
 
-    deployer.deploy(EVAPCoin).then(function () {
-        EVAPCoin.deployed()
+    return deployer.deploy(EVAPCoin).then(function () {
+        return EVAPCoin.deployed()
             .then(function (instance) {
                 return instance.address
             })
