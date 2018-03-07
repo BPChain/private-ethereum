@@ -6,12 +6,11 @@ const id = setInterval(function () {
           console.log("-------------------------Addresse-------------")
           console.log(address)
           clearInterval(id)
-          require("./simulateContract")(address)
+          require("./simulateContract")(address).then(function () {
           process.exit(0)
+         })
      })
   ws.onerror=function(event){
     console.log("Error");
   }
 }, 1000)
-
-
