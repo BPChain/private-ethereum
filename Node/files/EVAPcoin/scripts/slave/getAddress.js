@@ -1,6 +1,6 @@
 const WebSocket = require('ws');
 
-const ws = new WebSocket('ws://eth_contract_deployer_1:40000');
+const ws = new WebSocket('ws://eth_contract_deployer:40000');
 
 
 ws.on('message', function incoming(address) {
