@@ -1,5 +1,13 @@
-var User = artifacts.require("../contracts/EVAPCoin.sol");
+var EVAPCoin = artifacts.require("../contracts/EVAPCoin.sol");
 
 module.exports = function(deployer) {
-  deployer.deploy(User);
+  var evap;
+  deployer.deploy(EVAPCoin);
+  EVAPCoin.deployed().then(function (instance) {
+    evap = instance;
+    return evap.address;
+    }).then(function (result) {
+      console.log(result);
+    });
+
 };
