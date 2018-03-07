@@ -1,17 +1,16 @@
 const WebSocket = require('ws');
-const id = setTimeout(function () {
+const id = setInterval(function () {
   var ws
-  try {
     ws = new WebSocket('ws://eth_contract_deployer:40000')
      ws.on('message', function incoming(address) {
-       console.log("-------------------------Addresse-------------")
-       console.log(address)
-
-       clearInterval(id)
+          console.log("-------------------------Addresse-------------")
+          console.log(address)
+          clearInterval(id)
+          require("./simulateContract")(address)
+          process.exit(0)
      })
-  }
-  catch (Exception) {
-    console.error(Exception)
+  ws.onerror=function(event){
+    console.log("Error");
   }
 }, 1000)
 
