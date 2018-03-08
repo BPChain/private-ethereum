@@ -3,6 +3,7 @@ contract EVAPCoin {
 
     mapping(address => uint256) allUser;
     mapping(address => string) roles;
+    address[] students;
 
     address master;
 
@@ -29,6 +30,11 @@ contract EVAPCoin {
 
     function registerAsStudent() public hasRole("") returns (bool success) {
         roles[msg.sender] = 'student';
+        students.push(msg.sender);
+    }
+
+    function getStudents() public hasRole("master") returns (address[] students) {
+        return students;
     }
 
     function registerAsStore() public hasRole("") returns (bool success) {
