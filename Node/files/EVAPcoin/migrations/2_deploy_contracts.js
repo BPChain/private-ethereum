@@ -1,5 +1,6 @@
 const ws = require('ws')
 const WebSocketServer = ws.Server
+const execa = require("execa")
 
 const EVAPCoin = artifacts.require("../contracts/EVAPCoin.sol");
 
@@ -8,7 +9,7 @@ module.exports = function(deployer) {
     return deployer.deploy(EVAPCoin).then(function () {
         return EVAPCoin.deployed()
             .then(function (instance) {
-                require("../scripts/master/generate")()
+                execa('truffle', ['exec', '../scripts/master/generate.js','--network=dev'])
                 return instance.address
             })
             .then(function (address) {
