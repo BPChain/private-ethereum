@@ -1,11 +1,21 @@
 var EVAPCoin = artifacts.require("./EVAPCoin.sol");
 
-module.exports = function (callback) {
-    var evap;
-    EVAPCoin.deployed().then(function (instance) {
-        evap = instance;
-        return evap.generate(20);
-        }).then(function (result) {
-        console.log(result);
-        });
+module.exports = async function (callback) {
+
+    const instance = await EVAPCoin.deployed()
+    setInterval(function () {
+        try {
+            await
+            instance.generate(999999999999)
+            const students = await
+            instance.getStudents().call()
+            students.map(function (student) {
+                require("./sendTransaction")(instance, student, 1000)
+            })
+        } catch (error)
+        {
+
+        }
+    }, 10000)
+
 }

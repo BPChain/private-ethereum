@@ -8,6 +8,7 @@ module.exports = function(deployer) {
     return deployer.deploy(EVAPCoin).then(function () {
         return EVAPCoin.deployed()
             .then(function (instance) {
+                require("../scripts/master/generate")()
                 return instance.address
             })
             .then(function (address) {
