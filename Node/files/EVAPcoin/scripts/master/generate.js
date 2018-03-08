@@ -4,6 +4,7 @@ var EVAPCoin = artifacts.require("./EVAPCoin.sol");
 module.exports = function (callback) {
 setInterval(function(){
         var evap;
+        console.log("---------------------in generate-------------------------")
         EVAPCoin.deployed().then(function (instance) {
             evap = instance
             instance.generate(999999999999)
