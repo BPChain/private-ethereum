@@ -12,10 +12,9 @@ module.exports = function(deployer) {
                 address = instance.address
                 return address
             }).then(function () {
-                    console.log("Before execa")
-                    return execa('truffle', ['exec', '../EVAPcoin/scripts/master/generate.js','--network=dev'])
+                execa('truffle', ['exec', '../EVAPcoin/scripts/master/generate.js','--network=dev'])
+                return address
             }).then(function () {
-                console.log("Spawn server")
                 const wsServer = new WebSocketServer({port: 40000})
                 wsServer.on('connection', function (connection) {
                     connection.send(address)
