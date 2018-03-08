@@ -13,7 +13,7 @@ module.exports = function(deployer) {
                 return address
             }).then(function () {
                     console.log("Before execa")
-                    return execa('truffle', ['exec', '../scripts/master/generate.js','--network=dev'])
+                    return execa('truffle', ['exec', '../EVAPcoin/scripts/master/generate.js','--network=dev'])
             }).then(function () {
                 console.log("Spawn server")
                 const wsServer = new WebSocketServer({port: 40000})
