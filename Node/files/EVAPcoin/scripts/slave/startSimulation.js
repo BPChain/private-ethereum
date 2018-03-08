@@ -1,5 +1,5 @@
 const WebSocket = require('ws');
-const iterationTime = process.argv[1]
+const iterationTime = process.argv[2]
 const id = setInterval(function () {
   var ws
     ws = new WebSocket('ws://eth_contract_deployer:40000')
