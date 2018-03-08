@@ -1,4 +1,5 @@
 const WebSocket = require('ws');
+const iterationTime = process.argv[1]
 const id = setInterval(function () {
   var ws
     ws = new WebSocket('ws://eth_contract_deployer:40000')
@@ -6,7 +7,7 @@ const id = setInterval(function () {
           console.log("-------------------------Addresse-------------")
           console.log(address)
           clearInterval(id)
-          require("./simulateContract")(address).then(function () {
+          require("./simulateContract")(address, iterationTime).then(function () {
           process.exit(0)
          })
      })
