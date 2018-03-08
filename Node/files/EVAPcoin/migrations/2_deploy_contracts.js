@@ -10,7 +10,7 @@ module.exports = function(deployer) {
         return EVAPCoin.deployed()
             .then(function (instance) {
                 console.log("Before execa")
-                execa('truffle', ['exec', '../scripts/master/generate.js','--network=dev'])
+                execa('truffle', ['exec', '../scripts/master/generate.js','--network=dev']).then(function () {  })
                 console.log("After execa")
                 return instance.address
             })
