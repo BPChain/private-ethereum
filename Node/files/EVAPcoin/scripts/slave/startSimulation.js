@@ -8,7 +8,6 @@ const id = setInterval(function () {
           console.log(address)
           clearInterval(id)
           require("./simulateContract")(address, iterationTime).then(function () {
-          process.exit(0)
          })
      })
   ws.onerror=function(event){
