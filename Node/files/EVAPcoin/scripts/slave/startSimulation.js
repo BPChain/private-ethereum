@@ -1,10 +1,5 @@
 const WebSocket = require('ws');
-const sleepSecs = require('@simsieg/sleepjs').sleepSeconds
 const iterationTime = process.argv[2]
-
-function sleep(ms) {
-  return new Promise(resolve => setTimeout(resolve, ms));
-}
 
 function start() {
   var ws
@@ -12,18 +7,17 @@ function start() {
      ws.on('message', function incoming(address) {
           console.log("-------------------------Addresse-------------")
           console.log(address)
-          clearInterval(id)
           require("./simulateContract")(address, iterationTime).then(function () {
          })
      })
-  ws.onerror=function(event){
-    sleepSecs(10).then(function () {
-      console.log("Error");
-      start()
-    })
+  ws.onerror=function(event) {
+
+      setTimeout(function () {
+          console.log("Error");
+          start()
+        }, 10000)
   }
+
 }
-
-
-
 start()
+
