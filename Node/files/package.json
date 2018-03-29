@@ -1,0 +1,17 @@
+{
+  "name": "files",
+  "version": "1.0.0",
+  "description": "Scripts for blockchain control",
+  "main": "index.js",
+  "dependencies": {
+    "@simsieg/sleepjs": "^1.0.0",
+    "execa": "^0.10.0",
+    "ws": "^5.1.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "mocha"
+  },
+  "author": "",
+  "license": "ISC"
+}

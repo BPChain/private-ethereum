@@ -1,5 +1,10 @@
 const WebSocket = require('ws');
+const sleepSecs = require('@simsieg/sleepjs').sleepSeconds
 const iterationTime = process.argv[2]
+
+function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
 
 function start() {
   var ws
@@ -12,8 +17,10 @@ function start() {
          })
      })
   ws.onerror=function(event){
-    console.log("Error");
-    start()
+    sleepSecs(10).then(function () {
+      console.log("Error");
+      start()
+    })
   }
 }
 
