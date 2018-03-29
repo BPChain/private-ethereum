@@ -1,6 +1,7 @@
 const WebSocket = require('ws');
 const iterationTime = process.argv[2]
-const id = setInterval(function () {
+
+function start() {
   var ws
     ws = new WebSocket('ws://eth_contract_deployer:40000')
      ws.on('message', function incoming(address) {
@@ -12,5 +13,10 @@ const id = setInterval(function () {
      })
   ws.onerror=function(event){
     console.log("Error");
+    start()
   }
-}, 1000)
+}
+
+
+
+start()
