@@ -13,7 +13,7 @@ function start() {
   ws.onerror=function(event) {
 
       setTimeout(function () {
-          console.log("Error");
+          console.log("Contract address WebSocket not reachable");
           start()
         }, 10000)
   }
