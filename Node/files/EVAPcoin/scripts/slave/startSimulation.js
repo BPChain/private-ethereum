@@ -7,7 +7,12 @@ function start() {
      ws.on('message', function incoming(address) {
           console.log("-------------------------Addresse-------------")
           console.log(address)
-          require("./simulateContract")(address, iterationTime).then(function () {
+          require("./simulateContract")(address, iterationTime).catch(function (error) {
+              setTimeout(function () {
+          console.log("Become student failed");
+          console.log(error)
+          start()
+        }, 10000)
          })
      })
   ws.onerror=function(event) {
