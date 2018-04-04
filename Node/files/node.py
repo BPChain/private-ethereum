@@ -90,6 +90,7 @@ def provide_data(last_block_number, old_node_data, web3):
 
 
 def get_node_data(blocks_to_send, last_sent_block, web3):
+    uri = yaml.safe_load(open("/root/files/config.yml"))
     avg_block_difficulty = calculate_avg_block_difficulty(blocks_to_send)
     avg_block_time = calculate_avg_block_time(blocks_to_send, last_sent_block)
     host_id = web3.admin.nodeInfo.id
@@ -99,7 +100,7 @@ def get_node_data(blocks_to_send, last_sent_block, web3):
     node_data = {"chainName": "ethereum", "hostId": host_id, "hashrate": hash_rate,
                  "gasPrice": gas_price,
                  "avgDifficulty": avg_block_difficulty, "avgBlocktime": avg_block_time,
-                 "isMining": is_mining, "target": socket.gethostname()}
+                 "isMining": is_mining, "target": uri['machine']}
     return node_data
 
 

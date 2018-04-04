@@ -2,3 +2,5 @@ networking:
   socketProtocol: "wss://"
   socketPort: ""
   socketAdress: "bpt-lab.org/bp2017w1-backendlistener"
+
+machine: "FSOC-rx600s5-2"
