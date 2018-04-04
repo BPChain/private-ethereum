@@ -11,7 +11,7 @@ services:
     ports:
       - "30303:30303"
       - "30303:30303/udp"
-      - "8545:8545"
+      - "8546:8546"
 
   eth_node:
     build: .
@@ -20,7 +20,7 @@ services:
     entrypoint: /root/files/start_eth_node.sh
     networks:
       - backendnet
-    command: '--datadir=~/.ethereum/devchain --rpccorsdomain="http://127.0.0.1:8545" --networkid=456719 --rpc --rpcapi "db,personal,eth,net,web3,miner,admin" --bootnodes="enode://288b97262895b1c7ec61cf314c2e2004407d0a5dc77566877aad1f2a36659c8b698f4b56fd06c4a0c0bf007b4cfb3e7122d907da3b005fa90e724441902eb19e@IPAddress:30303"'
+    command: '--datadir=~/.ethereum/devchain --rpccorsdomain="http://127.0.0.1:8546" --networkid=456719 --rpc --rpcapi "db,personal,eth,net,web3,miner,admin" --bootnodes="enode://288b97262895b1c7ec61cf314c2e2004407d0a5dc77566877aad1f2a36659c8b698f4b56fd06c4a0c0bf007b4cfb3e7122d907da3b005fa90e724441902eb19e@IPAddress:30303"'
     stdin_open: true
     tty: true
     environment:
@@ -34,7 +34,7 @@ services:
     entrypoint: /root/files/start_eth_contract_deployer.sh
     networks:
       - backendnet
-    command: '--datadir=~/.ethereum/devchain --rpccorsdomain="http://127.0.0.1:8545" --networkid=456719 --rpc --rpcapi "db,personal,eth,net,web3,miner,admin" --bootnodes="enode://288b97262895b1c7ec61cf314c2e2004407d0a5dc77566877aad1f2a36659c8b698f4b56fd06c4a0c0bf007b4cfb3e7122d907da3b005fa90e724441902eb19e@IPAddress:30303"'
+    command: '--datadir=~/.ethereum/devchain --rpccorsdomain="http://127.0.0.1:8546" --networkid=456719 --rpc --rpcapi "db,personal,eth,net,web3,miner,admin" --bootnodes="enode://288b97262895b1c7ec61cf314c2e2004407d0a5dc77566877aad1f2a36659c8b698f4b56fd06c4a0c0bf007b4cfb3e7122d907da3b005fa90e724441902eb19e@IPAddress:30303"'
     stdin_open: true
     tty: true
     ports:
@@ -49,7 +49,7 @@ services:
     entrypoint: /root/files/start_eth_lazy_node.sh
     networks:
       - backendnet
-    command: '--datadir=~/.ethereum/devchain --rpccorsdomain="http://127.0.0.1:8545" --networkid=456719 --rpc --rpcapi "db,personal,eth,net,web3,admin" --bootnodes="enode://288b97262895b1c7ec61cf314c2e2004407d0a5dc77566877aad1f2a36659c8b698f4b56fd06c4a0c0bf007b4cfb3e7122d907da3b005fa90e724441902eb19e@IPAddress:30303"'
+    command: '--datadir=~/.ethereum/devchain --rpccorsdomain="http://127.0.0.1:8546" --networkid=456719 --rpc --rpcapi "db,personal,eth,net,web3,admin" --bootnodes="enode://288b97262895b1c7ec61cf314c2e2004407d0a5dc77566877aad1f2a36659c8b698f4b56fd06c4a0c0bf007b4cfb3e7122d907da3b005fa90e724441902eb19e@IPAddress:30303"'
     stdin_open: true
     tty: true
     environment:
