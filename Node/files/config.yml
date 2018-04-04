@@ -3,4 +3,4 @@ networking:
   socketPort: ""
   socketAdress: "bpt-lab.org/bp2017w1-backendlistener"
 
-machine: "FSOC-rx600s5-2"
+machine: "rx600s5-2"
