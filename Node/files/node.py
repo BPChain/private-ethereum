@@ -18,7 +18,7 @@ from websocket import create_connection, WebSocket
 
 
 def connect_to_blockchain():
-    web3 = Web3(HTTPProvider('http://127.0.0.1:8546',
+    web3 = Web3(HTTPProvider('http://127.0.0.1:8547',
                              request_kwargs={'timeout': 120}))
     while not web3.isConnected():
         time.sleep(1)
