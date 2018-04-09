@@ -12,6 +12,7 @@ import subprocess
 import os
 from functools import reduce
 
+
 import yaml
 from web3 import Web3, HTTPProvider
 from websocket import create_connection, WebSocket
