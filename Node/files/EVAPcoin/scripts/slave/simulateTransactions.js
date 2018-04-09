@@ -5,6 +5,7 @@ module.exports = function (address, iterationTime) {
     ws = new WebSocket('ws://eth_contract_deployer:20001')
 
         setInterval(function() {
+            console.log("&&&&&&&&&&&&&&&&&&IN ITERATION&&&&&&&&&&&&&&&&&&&&&")
         try {
              ws.on('message', function incoming(data) {
                  console.info("############Changeinfo received##################")
