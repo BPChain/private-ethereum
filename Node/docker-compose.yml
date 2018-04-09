@@ -39,6 +39,7 @@ services:
     tty: true
     ports:
       - "40000"
+      - "20000:20000"
     environment:
       TARGET_HOSTNAME: ${HOSTNAME}
 
