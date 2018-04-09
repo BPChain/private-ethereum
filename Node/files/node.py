@@ -9,6 +9,7 @@ import json
 import logging
 import time
 import subprocess
+import os
 from functools import reduce
 
 import yaml
@@ -17,7 +18,7 @@ from websocket import create_connection, WebSocket
 
 
 def connect_to_blockchain():
-    web3 = Web3(HTTPProvider('http://127.0.0.1:8545',
+    web3 = Web3(HTTPProvider('http://127.0.0.1:8547',
                              request_kwargs={'timeout': 120}))
     while not web3.isConnected():
         time.sleep(1)
@@ -61,13 +62,13 @@ def calculate_avg_block_time(blocks_to_send, last_sent_block):
     return sum(deltas) / len(deltas)
 
 
-def provide_data_every(n_seconds, web3):
+def provide_data_every(n_seconds, web3, hostname):
     number_of_last_block = 0
     node_data = {"avgDifficulty": 0, "avgBlocktime": 0}
     while True:
         time.sleep(n_seconds)
         try:
-            number_of_last_block, node_data = provide_data(number_of_last_block, node_data, web3)
+            number_of_last_block, node_data = provide_data(number_of_last_block, node_data, web3, hostname)
             send_data(node_data)
         # pylint: disable=broad-except
         except Exception as exception:
@@ -75,10 +76,10 @@ def provide_data_every(n_seconds, web3):
             logging.critical({"message": exception})
 
 
-def provide_data(last_block_number, old_node_data, web3):
+def provide_data(last_block_number, old_node_data, web3, hostname):
     last_sent_block = web3.eth.getBlock(last_block_number) if last_block_number > 0 else None
     new_last_block_number, blocks_to_send = retrieve_new_blocks_since(last_block_number, web3)
-    node_data = get_node_data(blocks_to_send, last_sent_block, web3)
+    node_data = get_node_data(blocks_to_send, last_sent_block, web3, hostname)
     if new_last_block_number == last_block_number or last_block_number == 0:
         node_data["avgDifficulty"] = old_node_data["avgDifficulty"]
         node_data["avgBlocktime"] = old_node_data["avgBlocktime"]
@@ -88,7 +89,8 @@ def provide_data(last_block_number, old_node_data, web3):
     return last_block_number, node_data
 
 
-def get_node_data(blocks_to_send, last_sent_block, web3):
+def get_node_data(blocks_to_send, last_sent_block, web3, hostname):
+
     avg_block_difficulty = calculate_avg_block_difficulty(blocks_to_send)
     avg_block_time = calculate_avg_block_time(blocks_to_send, last_sent_block)
     host_id = web3.admin.nodeInfo.id
@@ -98,7 +100,7 @@ def get_node_data(blocks_to_send, last_sent_block, web3):
     node_data = {"chainName": "ethereum", "hostId": host_id, "hashrate": hash_rate,
                  "gasPrice": gas_price,
                  "avgDifficulty": avg_block_difficulty, "avgBlocktime": avg_block_time,
-                 "isMining": is_mining}
+                 "isMining": is_mining, "target": hostname}
     return node_data
 
 
@@ -140,12 +142,13 @@ def setup_logging():
 
 
 def main():
+    hostname = os.environ["TARGET_HOSTNAME"]
     send_period = 10
     web3_connector = connect_to_blockchain()
     setup_logging()
     unlock_account(web3_connector)
     start_mining(web3_connector)
-    provide_data_every(send_period, web3_connector)
+    provide_data_every(send_period, web3_connector, hostname)
 
 
 if __name__ == "__main__":

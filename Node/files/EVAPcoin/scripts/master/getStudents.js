@@ -1,10 +1,11 @@
 var EVAPCoin = artifacts.require("./EVAPCoin.sol");
-module.exports = function (receiver, value) {
+
+module.exports = function (callback) {
     var evap;
     EVAPCoin.deployed().then(function (instance) {
         evap = instance;
-        evap.transfer(receiver, value);
+        return evap.getStudents.call();
         }).then(function (result) {
-            return
+        console.log(result);
         });
 }

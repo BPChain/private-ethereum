@@ -4,7 +4,6 @@ geth --datadir=~/.ethereum/devchain --password <(echo -n 123)  account new
 BOOTSTRAP_IP=`getent hosts bootstrap | cut -d" " -f1`
 GETH_OPTS=${@/IPAddress/$BOOTSTRAP_IP}
 python3 /root/files/node.py &
-geth $GETH_OPTS &
-cd /root/files/EVAPcoin/scripts/slave && node /root/files/EVAPcoin/scripts/slave/startSimulation.js 20000
+geth $GETH_OPTS & cd /root/files/EVAPcoin;node startMigration.js
 
 
