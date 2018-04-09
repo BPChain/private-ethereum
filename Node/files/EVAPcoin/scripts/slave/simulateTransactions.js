@@ -6,6 +6,7 @@ module.exports = function (address, iterationTime) {
 
         setInterval(function() {
             console.log("&&&&&&&&&&&&&&&&&&IN ITERATION&&&&&&&&&&&&&&&&&&&&&")
+            console.log(iterationTime)
         try {
              ws.on('message', function incoming(data) {
                  console.info("############Changeinfo received##################")
