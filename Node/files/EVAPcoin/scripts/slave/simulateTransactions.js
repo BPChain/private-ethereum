@@ -7,7 +7,8 @@ module.exports = function (address, iterationTime) {
         setInterval(function() {
         try {
              ws.on('message', function incoming(data) {
-                 print("############Changeinfo received##################")
+                 console.info("############Changeinfo received##################")
+                 console.info(data)
              })
             return execa('truffle', ['exec', 'sendTransaction.js', address, '0x007ccffb7916f37f7aeef05e8096ecfbe55afc2f', '1', '--network=dev'])
                 .then(function (result) {
