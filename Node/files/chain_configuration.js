@@ -11,7 +11,8 @@ const wsServerDOCKER = new WebSocketServer({port: 20001})
                         wsServerDOCKER.clients.forEach(function (connection) {
                             connection.send(data)
                         })
-                 })
+                    })
+                })
                 wsServerDOCKER.on('connection', function incoming(connection) {
 
                     })
