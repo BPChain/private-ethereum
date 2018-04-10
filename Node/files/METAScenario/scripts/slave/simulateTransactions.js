@@ -22,7 +22,7 @@ module.exports = function (address, interval) {
         try {
             console.info("&&&&&&&&&&&INTERVAL&&&&&&&&&&&&")
             console.info(_interval)
-            return execa('truffle', ['exec', 'sendTransaction.js', address, '0x007ccffb7916f37f7aeef05e8096ecfbe55afc2f', bytes_to_send ,'1', '--network=dev'])
+            return execa('truffle', ['exec', 'sendTransaction.js', address, '0x007ccffb7916f37f7aeef05e8096ecfbe55afc2f', '1', bytes_to_send, '--network=dev'])
                 .then(function (result) {
                     console.log(result)
                 })
