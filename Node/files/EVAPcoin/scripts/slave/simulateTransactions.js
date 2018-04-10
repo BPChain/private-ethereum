@@ -16,6 +16,8 @@ module.exports = function (address, interval) {
     })
 
     function startInterval(_interval) {
+        console.info("&&&&&&&&&&&INTERVAL&&&&&&&&&&&&")
+        console.info(_interval)
       intervalId = setInterval(function() {
         try {
             return execa('truffle', ['exec', 'sendTransaction.js', address, '0x007ccffb7916f37f7aeef05e8096ecfbe55afc2f', '1', '--network=dev'])
