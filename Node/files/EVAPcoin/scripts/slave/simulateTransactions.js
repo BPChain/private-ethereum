@@ -17,7 +17,7 @@ module.exports = function (address, interval) {
 
     function startInterval(_interval) {
 
-      intervalId = setInterval(function() {
+      intervalID = setInterval(function() {
         try {
             console.info("&&&&&&&&&&&INTERVAL&&&&&&&&&&&&")
             console.info(_interval)
