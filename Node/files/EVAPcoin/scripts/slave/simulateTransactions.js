@@ -10,9 +10,9 @@ module.exports = function (address, interval) {
         console.info("############Changeinfo received##################")
         console.info(data)
         clearInterval(intervalID)
-        var interval = JSON.parse(data).frequency
-        console.info(interval)
-        startInterval(data)
+        var newInterval = JSON.parse(data).frequency
+        console.info(newInterval)
+        startInterval(newInterval)
     })
 
     function startInterval(_interval) {
