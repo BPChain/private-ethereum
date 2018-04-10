@@ -1,5 +1,6 @@
 const execa = require("execa")
 const WebSocket = require('ws')
+const randomBytes = require('random-bytes')
 module.exports = function (address, interval) {
 
     var ws
@@ -12,17 +13,21 @@ module.exports = function (address, interval) {
         console.info(data)
         clearInterval(intervalID)
         var newInterval = JSON.parse(data).frequency
+        var newPayloadSize = JSON.parse(data).payloadSize
         console.info(newInterval)
-        startInterval(newInterval)
+        console.info(byte_size)
+        bytes_to_send = randomBytes.sync(newPayloadSize)
+        startInterval(newInterval, bytes_to_send)
     })
 
-    function startInterval(_interval) {
+    function startInterval(_interval, _bytes_to_send) {
 
       intervalID = setInterval(function() {
         try {
+            console.info(_bytes_to_send)
             console.info("&&&&&&&&&&&INTERVAL&&&&&&&&&&&&")
             console.info(_interval)
-            return execa('truffle', ['exec', 'sendTransaction.js', address, '0x007ccffb7916f37f7aeef05e8096ecfbe55afc2f', '1', bytes_to_send, '--network=dev'])
+            return execa('truffle', ['exec', 'sendTransaction.js', address, '0x007ccffb7916f37f7aeef05e8096ecfbe55afc2f', '1', _bytes_to_send, '--network=dev'])
                 .then(function (result) {
                     console.log(result)
                 })
@@ -31,7 +36,7 @@ module.exports = function (address, interval) {
         }
       }, _interval);
 }
-      startInterval(interval)
+      startInterval(interval, bytes_to_send)
 
 
 }
