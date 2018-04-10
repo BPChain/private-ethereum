@@ -3,7 +3,7 @@ const WebSocket = require('ws')
 module.exports = function (address, interval) {
 
     var ws
-    var bytes_to_send = "blablub"
+    var bytes_to_send = 0x0000000000000000000000000000000000000000000000000000000001020304
     ws = new WebSocket('ws://eth_contract_deployer:20001')
     var intervalID
 
