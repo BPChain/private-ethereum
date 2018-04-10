@@ -1,17 +1,23 @@
 const execa = require("execa")
 const WebSocket = require('ws')
-module.exports = function (address, iterationTime) {
+module.exports = function (address, interval) {
+
     var ws
     ws = new WebSocket('ws://eth_contract_deployer:20001')
+    var intervalID
 
-        setInterval(function() {
-            console.log("&&&&&&&&&&&&&&&&&&IN ITERATION&&&&&&&&&&&&&&&&&&&&&")
-            console.log(iterationTime)
+    ws.on('message', function incoming(data) {
+        console.info("############Changeinfo received##################")
+        console.info(data)
+        clearInterval(intervalID)
+        var interval = JSON.parse(data).frequency
+        console.info(interval)
+        startInterval(data)
+    })
+
+    function startInterval(_interval) {
+      intervalId = setInterval(function() {
         try {
-             ws.on('message', function incoming(data) {
-                 console.info("############Changeinfo received##################")
-                 console.info(data)
-             })
             return execa('truffle', ['exec', 'sendTransaction.js', address, '0x007ccffb7916f37f7aeef05e8096ecfbe55afc2f', '1', '--network=dev'])
                 .then(function (result) {
                     console.log(result)
@@ -19,5 +25,9 @@ module.exports = function (address, iterationTime) {
         } catch(error){
             console.log(error)
         }
-}, iterationTime)
+      }, _interval);
+}
+      startInterval(interval)
+
+
 }
