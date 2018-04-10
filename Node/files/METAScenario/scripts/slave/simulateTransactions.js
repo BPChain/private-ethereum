@@ -3,6 +3,7 @@ const WebSocket = require('ws')
 module.exports = function (address, interval) {
 
     var ws
+    var bytes_to_send = "blablub"
     ws = new WebSocket('ws://eth_contract_deployer:20001')
     var intervalID
 
@@ -21,7 +22,7 @@ module.exports = function (address, interval) {
         try {
             console.info("&&&&&&&&&&&INTERVAL&&&&&&&&&&&&")
             console.info(_interval)
-            return execa('truffle', ['exec', 'sendTransaction.js', address, '0x007ccffb7916f37f7aeef05e8096ecfbe55afc2f', '1', '--network=dev'])
+            return execa('truffle', ['exec', 'sendTransaction.js', address, '0x007ccffb7916f37f7aeef05e8096ecfbe55afc2f', bytes_to_send ,'1', '--network=dev'])
                 .then(function (result) {
                     console.log(result)
                 })
