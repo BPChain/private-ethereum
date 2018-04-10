@@ -1,4 +1,4 @@
-FROM ethereum/client-go:v1.7.3
+FROM ethereum/client-go:latest
 
 RUN apk add --update git bash python3 musl-dev gcc python3-dev py3-netifaces nodejs nodejs-npm nano
 RUN npm install -g truffle
