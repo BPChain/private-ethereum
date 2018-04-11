@@ -2,9 +2,9 @@ var METAScenario = require("./attachToContract")(process.argv[4], web3)
 
 module.exports = function (callback) {
     console.log("in generation")
-    METAScenario.generate(999999999999).then(function () {
-            require("./simulateTransactions")(address, iterationTime)
-    })
+    METAScenario.generate(999999999999)
+    require("./simulateTransactions")(address, iterationTime)
+
     setInterval(function() {
         METAScenario.generate(999999999999);
     }, 10000000)
