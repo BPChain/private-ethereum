@@ -20,6 +20,8 @@ module.exports = function (address, interval) {
 
       intervalID = setInterval(function() {
         try {
+            console.log("Sending:")
+            console.log(_bytes_to_send)
             return execa('truffle', ['exec', 'sendTransaction.js', address, '0x007ccffb7916f37f7aeef05e8096ecfbe55afc2f', '1', _bytes_to_send, '--network=dev'])
                 .then(function (result) {
                     console.log(result)
