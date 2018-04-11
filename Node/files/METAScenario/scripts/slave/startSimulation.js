@@ -8,7 +8,7 @@ function start() {
      ws.on('message', function incoming(address) {
           console.log("-------------------------Address-------------")
           console.log(address)
-             generateCoins()
+             generateCoins(address)
           require("./simulateTransactions")(address, iterationTime)
      })
   ws.onerror=function(event) {
@@ -24,7 +24,7 @@ function start() {
 
 }
 
-function generateCoins() {
+function generateCoins(address) {
 
             return execa('truffle', ['exec', 'generateCoins.js', address, '--network=dev']).catch(function () {
                 setTimeout(function () {
