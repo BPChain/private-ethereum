@@ -28,7 +28,7 @@ function generateCoins(address) {
 
             return execa('truffle', ['exec', 'generateCoins.js', address, '--network=dev']).catch(function () {
                 setTimeout(function () {
-                generateCoin()
+                generateCoins()
             }, 10000)
             })
 
