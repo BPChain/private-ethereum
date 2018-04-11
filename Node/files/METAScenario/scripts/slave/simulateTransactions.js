@@ -2,22 +2,10 @@ const execa = require("execa")
 const WebSocket = require('ws')
 const randomBytes = require('random-bytes')
 module.exports = function (address, interval) {
-
-    var ws
     var bytes_to_send = randomBytes.sync(1)
-    ws = new WebSocket('ws://eth_contract_deployer:20001')
     var intervalID
 
-    ws.on('message', function incoming(data) {
-        clearInterval(intervalID)
-        var newInterval = JSON.parse(data).frequency * 1000
-        var newPayloadSize = JSON.parse(data).payloadSize
-        bytes_to_send = randomBytes.sync(newPayloadSize)
-        startInterval(newInterval, bytes_to_send)
-    })
-
     function startInterval(_interval, _bytes_to_send) {
-
       intervalID = setInterval(function() {
         try {
             console.log("Sending:")
@@ -30,8 +18,26 @@ module.exports = function (address, interval) {
             console.log(error)
         }
       }, _interval);
-}
-      startInterval(interval, bytes_to_send)
+    }
 
+    function startws(){
+        var ws
+        ws = new WebSocket('ws://eth_contract_deployer:20001')
+        ws.on('message', function incoming(data) {
+        clearInterval(intervalID)
+        var newInterval = JSON.parse(data).frequency * 1000
+        var newPayloadSize = JSON.parse(data).payloadSize
+        bytes_to_send = randomBytes.sync(newPayloadSize)
+        startInterval(newInterval, bytes_to_send)
+        })
+        ws.onerror=function(error) {
+                            setTimeout(function () {
+                                ws.close()
+                startws()
+            }, 10000)
+        }
+    }
 
+    startws()
+    startInterval(interval, bytes_to_send)
 }
