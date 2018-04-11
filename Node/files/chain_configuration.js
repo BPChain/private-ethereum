@@ -8,6 +8,8 @@ const wsServerDOCKER = new WebSocketServer({port: 20001})
                         console.log("#########################################################")
                         console.log("Received message successfully")
                         console.log(data)
+                        console.log(wsServerDOCKER.clients)
+                        console.log(wsServerDOCKER.clients.size)
                         wsServerDOCKER.clients.forEach(function (connection) {
                             connection.send(data)
                         })
