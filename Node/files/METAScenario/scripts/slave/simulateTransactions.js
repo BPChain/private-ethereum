@@ -15,7 +15,7 @@ module.exports = function (address, interval) {
         var newInterval = JSON.parse(data).frequency
         var newPayloadSize = JSON.parse(data).payloadSize
         console.info(newInterval)
-        console.info(byte_size)
+        console.info(newPayloadSize)
         bytes_to_send = randomBytes.sync(newPayloadSize)
         startInterval(newInterval, bytes_to_send)
     })
