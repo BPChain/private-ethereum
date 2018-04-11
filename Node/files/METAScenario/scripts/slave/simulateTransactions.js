@@ -23,13 +23,13 @@ module.exports = function (address, interval) {
     function startws(){
         var ws
         ws = new WebSocket('ws://eth_contract_deployer:20001')
-        ws.on('message', function incoming(data) {
-        clearInterval(intervalID)
-        var newInterval = JSON.parse(data).frequency * 1000
-        var newPayloadSize = JSON.parse(data).payloadSize
-        bytes_to_send = randomBytes.sync(newPayloadSize)
-        startInterval(newInterval, bytes_to_send)
-        })
+            ws.on('message', function incoming(data) {
+                clearInterval(intervalID)
+                var newInterval = JSON.parse(data).frequency * 1000
+                var newPayloadSize = JSON.parse(data).payloadSize
+                bytes_to_send = randomBytes.sync(newPayloadSize)
+                startInterval(newInterval, bytes_to_send)
+            })
         ws.onerror=function(error) {
                             setTimeout(function () {
                                 ws.close()
