@@ -2,22 +2,14 @@ const WebSocket = require('ws');
 const iterationTime = process.argv[2]
 const execa = require("execa")
 
-function start(error_flag) {
+function start() {
   var ws
     ws = new WebSocket('ws://eth_contract_deployer:40000')
      ws.on('message', function incoming(address) {
           console.log("-------------------------Address-------------")
           console.log(address)
-         if(error_flag === 0) {
              generateCoins()
-         }
-          require("./simulateContract")(address, iterationTime).catch(function (error) {
-              setTimeout(function () {
-          console.log("Starting simulation failed");
-          console.log(error)
-          start(1)
-        }, 10000)
-         })
+          require("./simulateTransactions")(address, iterationTime)
      })
   ws.onerror=function(event) {
           console.log("Contract address WebSocket not reachable");
@@ -26,22 +18,20 @@ function start(error_flag) {
 
   ws.onclose=function(event){
       setTimeout(function () {
-          start(0)
+          start()
         }, 10000)
   }
 
 }
 
 function generateCoins() {
-        try {
-            return execa('truffle', ['exec', 'generateCoins.js', address, '--network=dev']).then(function () {
-            })
-        } catch(error)
-        {
-            setTimeout(function () {
+
+            return execa('truffle', ['exec', 'generateCoins.js', address, '--network=dev']).catch(function () {
+                setTimeout(function () {
                 generateCoin()
             }, 10000)
-        }
+            })
+
 }
-start(0)
+start()
 
