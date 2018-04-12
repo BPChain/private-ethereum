@@ -4,7 +4,7 @@ const WebSocketServer = ws.Server
 const wsServerFSOC = new WebSocketServer({port: 20000})
 const wsServerDOCKER = new WebSocketServer({port: 20001})
 var number_of_connections = 0
-var cached_data = JSON.stringify({"payloadSize": 10, "frequency": 20})
+var cached_data = JSON.stringify({"payloadSize": 10, "period": 20})
     setInterval(function () {
         if (number_of_connections < wsServerDOCKER.clients.size) {
             number_of_connections = wsServerDOCKER.clients.size
