@@ -12,7 +12,10 @@ var cached_data = JSON.stringify({"payloadSize": 10, "period": 20})
                                 connection.send(cached_data)
                             })
         }
-    }, 30000)
+        if(wsServerDOCKER.clients.size < number_of_connections) {
+            number_of_connections = wsServerDOCKER.clients.size
+        }
+    }, 5000)
     wsServerFSOC.on('connection', function incoming(connection) {
         connection.on('message', function message(data) {
             console.log("#########################################################")
