@@ -29,6 +29,9 @@ var cached_data = JSON.stringify({"payloadSize": 10, "period": 20})
                 connection.send(data)
             })
         })
+        connection.onclose=function (event) {
+            number_of_connections = wsServerDOCKER.clients.size
+        }
     })
     wsServerDOCKER.on('connection', function incoming(connection) {
 
