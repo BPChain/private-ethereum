@@ -5,6 +5,7 @@ RUN npm install -g truffle
 RUN npm install random-bytes --save
 RUN pip3 install web3 websocket-client pyyaml
 
+COPY .ethash root/.ethash
 COPY files root/files
 RUN cd /root/files && npm install
 RUN chmod +x /root/files/start_eth_node.sh
