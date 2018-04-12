@@ -17,6 +17,9 @@ import yaml
 from web3 import Web3, HTTPProvider
 from websocket import create_connection, WebSocket
 
+avg_block_time = 0
+avg_block_difficulty = 0
+
 
 def connect_to_blockchain():
     web3 = Web3(HTTPProvider('http://127.0.0.1:8547',
@@ -46,17 +49,19 @@ def retrieve_new_blocks_since(number_of_last_sent_block, web3):
 
 
 def calculate_avg_block_difficulty(blocks_to_send):
+    global avg_block_difficulty
     if not blocks_to_send:
-        return 0
+        return avg_block_difficulty
     else:
         return reduce((lambda accum, block: accum + block.difficulty), blocks_to_send, 0) / len(
             blocks_to_send)
 
 
 def calculate_avg_block_time(blocks_to_send, last_sent_block):
+    global avg_block_time
     # first block might be genesis block with timestamp 0. this has to be catched.
     if last_sent_block is None or not blocks_to_send:
-        return 0
+        return avg_block_time
     blocks_to_send = [last_sent_block] + blocks_to_send
     deltas = [next.timestamp - current.timestamp for current, next in zip(blocks_to_send,
                                                                           blocks_to_send[1:])]
@@ -91,15 +96,17 @@ def provide_data(last_block_number, old_node_data, web3, hostname):
 
 
 def get_node_data(blocks_to_send, last_sent_block, web3, hostname):
-
+    global avg_block_difficulty
+    global avg_block_time
     avg_block_difficulty = calculate_avg_block_difficulty(blocks_to_send)
     avg_block_time = calculate_avg_block_time(blocks_to_send, last_sent_block)
     host_id = web3.admin.nodeInfo.id
     hash_rate = web3.eth.hashrate
+    last_block_size = web3.eth.getBlock('latest').size
     gas_price = web3.eth.gasPrice
     is_mining = 1 if web3.eth.mining else 0
     node_data = {"chainName": "ethereum", "hostId": host_id, "hashrate": hash_rate,
-                 "gasPrice": gas_price,
+                 "block_size": last_block_size,
                  "avgDifficulty": avg_block_difficulty, "avgBlocktime": avg_block_time,
                  "isMining": is_mining, "target": hostname}
     return node_data
