@@ -1,7 +1,7 @@
 const execa = require("execa")
 const WebSocket = require('ws')
 const randomBytes = require('random-bytes')
-const truffle = require('truffle')
+
 module.exports = function (address, interval) {
     var bytes_to_send = randomBytes.sync(1)
     var intervalID
