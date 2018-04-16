@@ -15,7 +15,7 @@ module.exports = function (address, interval) {
         METAScenario = provider.eth.contract(abi).at(address);
         provider.eth.defaultAccount = provider.eth.accounts[0];
         var bla = randomBytes.sync(1)
-        var result = METAScenario.transfer('0x007ccffb7916f37f7aeef05e8096ecfbe55afc2f', 1, bla)
+        var result = METAScenario.transfer('0x007ccffb7916f37f7aeef05e8096ecfbe55afc2f', 1, bla).send({from: provider.eth.accounts[0]})
         console.log(result)
         startws()
         startInterval(interval, bytes_to_send, METAScenario)
@@ -27,7 +27,7 @@ module.exports = function (address, interval) {
         try {
             console.log("Sending:")
             console.log(_bytes_to_send)
-            var result = METAScenario.transfer('0x007ccffb7916f37f7aeef05e8096ecfbe55afc2f', 1, _bytes_to_send)
+            var result = METAScenario.transfer('0x007ccffb7916f37f7aeef05e8096ecfbe55afc2f', 1, _bytes_to_send).send({from: provider.eth.accounts[0]})
 
             return execa('truffle', ['exec', 'sendTransaction.js', address, '0x007ccffb7916f37f7aeef05e8096ecfbe55afc2f', '1', _bytes_to_send, '--network=dev'])
                 .then(function (result) {
