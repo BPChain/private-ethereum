@@ -15,7 +15,7 @@ module.exports = function (address, interval) {
         METAScenario = provider.eth.contract(abi).at(address);
         provider.eth.defaultAccount = provider.eth.accounts[0];
         var bla = randomBytes.sync(1)
-        METAScenario.methods.transfer('0x007ccffb7916f37f7aeef05e8096ecfbe55afc2f', 1, bla).send({from: provider.eth.accounts[0]}).then(function (value) {
+        METAScenario.transfer('0x007ccffb7916f37f7aeef05e8096ecfbe55afc2f', 1, bla).send({from: provider.eth.accounts[0]}).then(function (value) {
             console.log(value)
         })
         startws()
