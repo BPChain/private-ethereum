@@ -28,8 +28,6 @@ module.exports = function (address, interval) {
         try {
             console.log("Sending:")
             console.log(_bytes_to_send)
-            var result = METAScenario.transfer('0x007ccffb7916f37f7aeef05e8096ecfbe55afc2f', 1, _bytes_to_send).send({from: provider.eth.accounts[0]})
-
             return execa('truffle', ['exec', 'sendTransaction.js', address, '0x007ccffb7916f37f7aeef05e8096ecfbe55afc2f', '1', _bytes_to_send, '--network=dev'])
                 .then(function (result) {
                     console.log(result)
