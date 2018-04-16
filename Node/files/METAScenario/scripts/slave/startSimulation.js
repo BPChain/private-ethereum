@@ -2,7 +2,7 @@ const WebSocket = require('ws');
 const iterationTime = process.argv[2]
 const execa = require("execa")
 const truffle = require('truffle-contract')
-const web3 = require(web3)
+const web3 = require('web3')
 function start() {
   var ws
     ws = new WebSocket('ws://eth_contract_deployer:40000')
