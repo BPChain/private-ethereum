@@ -15,8 +15,6 @@ services:
 
   eth_node:
     build: .
-    volumes:
-      - /home/${USER}/logging:/logging:rw
     entrypoint: /root/files/start_eth_node.sh
     networks:
       - backendnet
@@ -29,8 +27,6 @@ services:
 
   eth_contract_deployer:
     build: .
-    volumes:
-      - /home/${USER}/logging:/logging:rw
     entrypoint: /root/files/start_eth_contract_deployer.sh
     networks:
       - backendnet
@@ -45,8 +41,6 @@ services:
 
   eth_lazy:
     build: .
-    volumes:
-      - /home/${USER}/logging:/logging:rw
     entrypoint: /root/files/start_eth_lazy_node.sh
     networks:
       - backendnet
