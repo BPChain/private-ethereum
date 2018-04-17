@@ -16,6 +16,7 @@ module.exports = function (address, interval) {
         provider.eth.defaultAccount = provider.eth.accounts[0];
         var x = METAScenario.transfer('0x007ccffb7916f37f7aeef05e8096ecfbe55afc2f', 1, bytes_to_send.toString('hex'))
         console.log(x)
+        console.log(METAScenario)
 
         startws()
         startInterval(interval, bytes_to_send, METAScenario)
@@ -27,8 +28,6 @@ module.exports = function (address, interval) {
         try {
             console.log("Sending:")
             console.log(_bytes_to_send)
-            var output = METAScenario.transfer('0x007ccffb7916f37f7aeef05e8096ecfbe55afc2f', 1, _bytes_to_send.toString('hex'))
-            console.log(output)
 
         } catch(error){
             console.log(error)
