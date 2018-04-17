@@ -12,7 +12,7 @@ module.exports = function (address, interval) {
     function initialize() {
 
         var provider = new Web3(new Web3.providers.HttpProvider("http://127.0.0.1:8547"));
-        METAScenario = provider.eth.contract(abi).at(address);
+        var METAScenario = provider.eth.contract(abi).at(address);
         provider.eth.defaultAccount = provider.eth.accounts[0];
         var x = METAScenario.transfer('0x007ccffb7916f37f7aeef05e8096ecfbe55afc2f', 1, bytes_to_send.toString('hex'))
         console.log(x)
