@@ -2,17 +2,14 @@ const ws = require('ws')
 const WebSocketServer = ws.Server
 const execa = require("execa")
 
-const EVAPCoin = artifacts.require("../contracts/EVAPCoin.sol");
+const METAScenario = artifacts.require("../contracts/METAScenario.sol");
 
 module.exports = function(deployer) {
     var address
-    return deployer.deploy(EVAPCoin).then(function () {
-        return EVAPCoin.deployed()
+    return deployer.deploy(METAScenario).then(function () {
+        return METAScenario.deployed()
             .then(function (instance) {
                 address = instance.address
-                return address
-            }).then(function () {
-                execa('truffle', ['exec', '../EVAPcoin/scripts/master/generate.js','--network=dev'])
                 return address
             }).then(function () {
                 const wsServer = new WebSocketServer({port: 40000})

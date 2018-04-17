@@ -1,5 +1,6 @@
 const WebSocket = require('ws');
 const iterationTime = process.argv[2]
+const execa = require("execa")
 
 function start() {
   var ws
@@ -7,13 +8,8 @@ function start() {
      ws.on('message', function incoming(address) {
           console.log("-------------------------Address-------------")
           console.log(address)
-          require("./simulateContract")(address, iterationTime).catch(function (error) {
-              setTimeout(function () {
-          console.log("Starting simulation failed");
-          console.log(error)
-          start()
-        }, 10000)
-         })
+             generateCoins(address)
+          require("./simulateTransactions")(address, iterationTime)
      })
   ws.onerror=function(event) {
           console.log("Contract address WebSocket not reachable");
@@ -25,6 +21,16 @@ function start() {
           start()
         }, 10000)
   }
+
+}
+
+function generateCoins(address) {
+
+            return execa('truffle', ['exec', 'generateCoins.js', address, '--network=dev']).catch(function () {
+                setTimeout(function () {
+                generateCoins(address)
+            }, 10000)
+            })
 
 }
 start()
