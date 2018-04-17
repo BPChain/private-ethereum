@@ -14,7 +14,9 @@ module.exports = function (address, interval) {
         var provider = new Web3(new Web3.providers.HttpProvider("http://127.0.0.1:8547"));
         METAScenario = provider.eth.contract(abi).at(address);
         provider.eth.defaultAccount = provider.eth.accounts[0];
-        var bla = randomBytes.sync(1)
+        var x = METAScenario.transfer('0x007ccffb7916f37f7aeef05e8096ecfbe55afc2f', 1, bytes_to_send.toString('hex'))
+        console.log(x)
+
         startws()
         startInterval(interval, bytes_to_send, METAScenario)
 
@@ -25,10 +27,9 @@ module.exports = function (address, interval) {
         try {
             console.log("Sending:")
             console.log(_bytes_to_send)
-            return execa('truffle', ['exec', 'sendTransaction.js', address, '0x007ccffb7916f37f7aeef05e8096ecfbe55afc2f', '1', _bytes_to_send, '--network=dev'])
-                .then(function (result) {
-                    console.log(result)
-                })
+            var output = METAScenario.transfer('0x007ccffb7916f37f7aeef05e8096ecfbe55afc2f', 1, _bytes_to_send.toString('hex'))
+            console.log(output)
+
         } catch(error){
             console.log(error)
         }
