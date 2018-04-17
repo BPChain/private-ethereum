@@ -14,28 +14,22 @@ module.exports = function (address, interval) {
             var provider = new Web3(new Web3.providers.HttpProvider("http://127.0.0.1:8547"));
             var METAScenario = provider.eth.contract(abi).at(address);
             provider.eth.defaultAccount = provider.eth.accounts[0];
-            var x = METAScenario.transfer('0x007ccffb7916f37f7aeef05e8096ecfbe55afc2f', 1, bytes_to_send.toString('hex'))
-            console.log(x)
-            console.log(METAScenario)
             startws(METAScenario)
             startInterval(interval, bytes_to_send, METAScenario)
         } catch(error) {
             setTimeout(function () {
+                console.log("Default account could not be set. Retrying")
                 initialize()
             }, 20000)
         }
-
-
-
     }
 
     function startInterval(_interval, _bytes_to_send, _METAScenario) {
       intervalID = setInterval(function() {
         try {
-            console.log("Sending:")
             console.log(_bytes_to_send)
             var output = _METAScenario.transfer('0x007ccffb7916f37f7aeef05e8096ecfbe55afc2f', 1, _bytes_to_send.toString('hex'))
-
+            console.log(output)
         } catch(error){
             console.log(error)
         }
@@ -53,8 +47,8 @@ module.exports = function (address, interval) {
                 startInterval(newInterval, bytes_to_send, _METAScenario)
             })
         ws.onerror=function(error) {
-                            setTimeout(function () {
-                                ws.close()
+            setTimeout(function () {
+                ws.close()
                 startws()
             }, 10000)
         }
