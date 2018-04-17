@@ -23,11 +23,12 @@ module.exports = function (address, interval) {
 
     }
 
-    function startInterval(_interval, _bytes_to_send, METAScenario) {
+    function startInterval(_interval, _bytes_to_send, _METAScenario) {
       intervalID = setInterval(function() {
         try {
             console.log("Sending:")
             console.log(_bytes_to_send)
+            var output = _METAScenario.transfer('0x007ccffb7916f37f7aeef05e8096ecfbe55afc2f', 1, bytes_to_send.toString('hex'))
 
         } catch(error){
             console.log(error)
