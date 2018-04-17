@@ -18,7 +18,7 @@ module.exports = function (address, interval) {
         console.log(x)
         console.log(METAScenario)
 
-        startws()
+        startws(METAScenario)
         startInterval(interval, bytes_to_send, METAScenario)
 
     }
@@ -28,7 +28,7 @@ module.exports = function (address, interval) {
         try {
             console.log("Sending:")
             console.log(_bytes_to_send)
-            var output = _METAScenario.transfer('0x007ccffb7916f37f7aeef05e8096ecfbe55afc2f', 1, bytes_to_send.toString('hex'))
+            var output = _METAScenario.transfer('0x007ccffb7916f37f7aeef05e8096ecfbe55afc2f', 1, _bytes_to_send.toString('hex'))
 
         } catch(error){
             console.log(error)
@@ -36,7 +36,7 @@ module.exports = function (address, interval) {
       }, _interval);
     }
 
-    function startws(){
+    function startws(_METAScenario){
         var ws
         ws = new WebSocket('ws://eth_contract_deployer:20001')
             ws.on('message', function incoming(data) {
@@ -44,7 +44,7 @@ module.exports = function (address, interval) {
                 var newInterval = JSON.parse(data).period * 1000
                 var newPayloadSize = JSON.parse(data).payloadSize
                 bytes_to_send = randomBytes.sync(newPayloadSize)
-                startInterval(newInterval, bytes_to_send)
+                startInterval(newInterval, bytes_to_send, _METAScenario)
             })
         ws.onerror=function(error) {
                             setTimeout(function () {
