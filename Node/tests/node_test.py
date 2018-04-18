@@ -42,6 +42,7 @@ def test_provide_data_for_first_block():
 
     web3 = Mock()
     web3.eth.getBlock = getBlock
+    web3.eth.getBlock('latest').size = 0
     number_of_last_block = 0
     node_data = {"avgDifficulty": 0, "avgBlocktime": 0}
     last_b_num, node_data = node.provide_data(number_of_last_block, node_data, web3, 'test')
@@ -72,6 +73,7 @@ def test_provide_data_no_new_blocks():
 
     web3 = Mock()
     web3.eth.getBlock = getBlock
+    web3.eth.getBlock('latest').size = 0
     number_of_last_block = BLOCKS[0].number
     node_data = {"avgDifficulty": 3, "avgBlocktime": 4.4}
     last_b_num, node_data = node.provide_data(number_of_last_block, node_data, web3, 'test')
@@ -115,7 +117,7 @@ def test_node_data_format():
     number_of_last_block = BLOCKS[0].number
     node_data = {"avgDifficulty": 3, "avgBlocktime": 4.4}
     _, node_data = node.provide_data(number_of_last_block, node_data, web3, 'test')
-    demo_data = {"hostId": 1, "hashrate": 1, "gasPrice": 1,
+    demo_data = {"hostId": 1, "hashrate": 1, "blockSize": 1,
                  "avgDifficulty": 1, "avgBlocktime": 1,
                  "isMining": 1}
     for key in demo_data:
