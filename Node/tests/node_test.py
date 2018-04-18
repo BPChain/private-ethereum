@@ -42,6 +42,7 @@ def test_provide_data_for_first_block():
 
     web3 = Mock()
     web3.eth.getBlock = getBlock
+    web3.eth.getBlock('latest').size = 0
     number_of_last_block = 0
     node_data = {"avgDifficulty": 0, "avgBlocktime": 0}
     last_b_num, node_data = node.provide_data(number_of_last_block, node_data, web3, 'test')
