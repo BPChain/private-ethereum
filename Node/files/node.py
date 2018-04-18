@@ -17,6 +17,8 @@ from websocket import create_connection, WebSocket
 
 from .python_logger import set_up_logging
 
+# pylint: disable=global-statement
+
 AVG_BLOCK_TIME = 0
 AVG_BLOCK_DIFFICULTY = 0
 
