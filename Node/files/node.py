@@ -7,9 +7,10 @@
 
 import json
 import time
-import subprocess
 import os
 from functools import reduce
+
+from .python_logger import set_up_logging
 
 import yaml
 from web3 import Web3, HTTPProvider
@@ -18,16 +19,19 @@ from websocket import create_connection, WebSocket
 avg_block_time = 0
 avg_block_difficulty = 0
 
+LOG = set_up_logging(__name__)
 
 def connect_to_blockchain():
     web3 = Web3(HTTPProvider('http://127.0.0.1:8547',
                              request_kwargs={'timeout': 120}))
     while not web3.isConnected():
         time.sleep(1)
+    LOG.info('Connected to ethereum chain')
     return web3
 
 
 def start_mining(web3):
+    LOG.info('Start mining')
     web3.miner.start(1)
 
 def unlock_account(web3):
@@ -76,7 +80,7 @@ def provide_data_every(n_seconds, web3, hostname):
             send_data(node_data)
         # pylint: disable=broad-except
         except Exception as exception:
-            print("During providing Data an error occurred: '%s'" % exception)
+            LOG.warning("During providing Data an error occurred: '%s'", exception)
 
 
 def provide_data(last_block_number, old_node_data, web3, hostname):
@@ -123,15 +127,14 @@ def send_data(node_data):
     try:
         web_socket = create_web_socket()
         web_socket.send(json.dumps(node_data))
-        print("Sent\nReceiving...")
+        LOG.info("Sent data")
         result = web_socket.recv()
-        print("Received '%s'" % result)
+        LOG.info("Received '%s'", result)
         web_socket.close()
     # Not nice, but works for now.
     # pylint: disable=broad-except
     except Exception as exception:
-        print("Exception occurred during sending: ")
-        print(exception)
+        LOG.warning("Exception occurred during sending: '%s'", exception)
 
 
 def main():
