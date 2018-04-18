@@ -8,13 +8,13 @@
 import json
 import time
 import os
+import yaml
+
+from web3 import Web3, HTTPProvider
+from websocket import create_connection, WebSocket
 from functools import reduce
 
 from .python_logger import set_up_logging
-
-import yaml
-from web3 import Web3, HTTPProvider
-from websocket import create_connection, WebSocket
 
 avg_block_time = 0
 avg_block_difficulty = 0
@@ -103,7 +103,6 @@ def get_node_data(blocks_to_send, last_sent_block, web3, hostname):
     host_id = web3.admin.nodeInfo.id
     hash_rate = web3.eth.hashrate
     last_block_size = web3.eth.getBlock('latest').size
-    gas_price = web3.eth.gasPrice
     is_mining = 1 if web3.eth.mining else 0
     node_data = {"chainName": "ethereum", "hostId": host_id, "hashrate": hash_rate,
                  "blockSize": last_block_size,
