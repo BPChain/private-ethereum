@@ -4,9 +4,9 @@ to control them """
 import json
 from http.server import BaseHTTPRequestHandler, HTTPServer, HTTPStatus
 
-from python_sources.implementation.Setup import Setup
+from ..implementation.Setup import Setup
 from .meta_scenario import SLAVES_SYNC
-from python_sources.implementation.Slave import Slave
+from ..implementation.Slave import Slave
 
 from ..project_logger import set_up_logging
 

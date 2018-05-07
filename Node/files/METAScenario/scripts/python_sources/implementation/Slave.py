@@ -7,7 +7,7 @@ LOG = set_up_logging(__name__)
 
 
 class Slave:
-    def __init__(self, config: Dict, setup: Setup):
+    def __init__(self, config, setup: Setup):
         LOG.info(config)
         LOG.info(setup)
         pass
