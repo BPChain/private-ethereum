@@ -1,4 +1,3 @@
-const WebSocket = require('ws')
 const WebSocketServer = ws.Server
 const Web3 = require('web3')
 const http = require('http')

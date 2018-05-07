@@ -1,8 +1,7 @@
 from typing import Dict
-from Savoir import Savoir
 
-from python_sources.implementation import Setup
-from python_sources.project_logger import set_up_logging
+from ..implementation import Setup
+from ..project_logger import set_up_logging
 
 LOG = set_up_logging(__name__)
 

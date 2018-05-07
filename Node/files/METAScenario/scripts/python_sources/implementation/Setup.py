@@ -2,7 +2,7 @@ from json import JSONDecodeError
 
 from time import sleep
 
-from python_sources.project_logger import set_up_logging
+from ..project_logger import set_up_logging
 
 LOG = set_up_logging(__name__)
 
