@@ -6,9 +6,8 @@
   "dependencies": {
     "execa": "^0.10.0",
     "ip": "^1.1.5",
-    "random-bytes": "^1.0.0",
-    "ws": "^5.1.0",
-    "web3": "latest"
+    "web3": "^0.20.6",
+    "ws": "^5.1.0"
   },
   "devDependencies": {},
   "scripts": {
