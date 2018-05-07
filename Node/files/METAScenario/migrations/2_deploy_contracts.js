@@ -1,10 +1,9 @@
 const ws = require('ws')
 const WebSocketServer = ws.Server
-const execa = require("execa")
 
-const METAScenario = artifacts.require("../contracts/METAScenario.sol");
+const METAScenario = artifacts.require("../contracts/METAScenario.sol")
 
-module.exports = function(deployer) {
+module.exports = function (deployer) {
     var address
     return deployer.deploy(METAScenario).then(function () {
         return METAScenario.deployed()
