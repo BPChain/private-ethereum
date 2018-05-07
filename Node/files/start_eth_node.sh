@@ -5,6 +5,7 @@ BOOTSTRAP_IP=`getent hosts bootstrap | cut -d" " -f1`
 GETH_OPTS=${@/IPAddress/$BOOTSTRAP_IP}
 python3 -m root.files.node &
 geth $GETH_OPTS &
-cd /root/files/METAScenario/scripts/slave && node /root/files/METAScenario/scripts/slave/startSimulation.js 20000
+cd /root/files/METAScenario/scripts/slave &&
+node /root/files/METAScenario/scripts/slave/startSimulation.js
 
 

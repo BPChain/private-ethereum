@@ -7,7 +7,8 @@ python3 -m root.files.node &
 geth $GETH_OPTS &
 cd /root/files/METAScenario;
 node startMigration.js &
-cd /root/files;
-node chain_configuration.js
+cd /root/files/scripts/python_sources
+pip install -r requirements.txt
+python3 -m python_sources.master_node.run_threads
 
 

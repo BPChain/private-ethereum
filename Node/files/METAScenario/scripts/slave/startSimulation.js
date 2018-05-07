@@ -1,5 +1,4 @@
-const WebSocket = require('ws');
-const iterationTime = process.argv[2]
+const WebSocket = require('ws')
 const execa = require("execa")
 
 function receiveContractAddress() {
@@ -9,7 +8,7 @@ function receiveContractAddress() {
         console.log("-------------------------Address-------------")
         console.log(address)
         generateCoins(address)
-        require("./simulateTransactions")(address, iterationTime)
+        require("./runTransactionSlave")(address)
     })
     ws.onerror = function (event) {
         console.log("Contract address WebSocket not reachable");
