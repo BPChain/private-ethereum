@@ -1,4 +1,4 @@
-const WebSocketServer = ws.Server
+const WebSocketServer = require('ws').Server
 const Web3 = require('web3')
 const http = require('http')
 const ip = require('ip')
