@@ -19,8 +19,9 @@ module.exports = function (address) {
                 body: ip_address
             }, function (error, response, body) {
                 console.log('connected')
-                startws(METAScenario)
+
             });
+            startws(METAScenario)
         }
         catch
             (error) {
