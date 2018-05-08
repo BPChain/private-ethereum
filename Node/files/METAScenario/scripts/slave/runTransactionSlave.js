@@ -33,8 +33,10 @@ module.exports = function (address) {
 
 
     function startws(_METAScenario) {
+        console.log('!!!!! Started Websocket')
         let ws = new WebSocketServer({port: 20001})
         ws.on('message', function incoming(data) {
+            console.log('doing transaction')
             let output = _METAScenario.transfer('0x007ccffb7916f37f7aeef05e8096ecfbe55afc2f', 1, data)
             console.log(output)
         })
