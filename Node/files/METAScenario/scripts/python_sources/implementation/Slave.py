@@ -13,7 +13,7 @@ class Slave:
         is_connected = False
         while not is_connected:
             try:
-                self.web_socket = create_connection('ws://' + config['ipAddress'], 5)
+                self.web_socket = create_connection('ws://' + config['ipAddress']+':20001', 5)
                 LOG.info("Connected")
                 is_connected = True
                 # result = web_socket.recv()
