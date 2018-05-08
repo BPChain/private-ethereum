@@ -18,8 +18,8 @@ module.exports = function (address) {
                 json: true,
                 body: ip_address
             }, function (error, response, body) {
-                console.log(response);
-                 startws(METAScenario)
+                console.log('connected')
+                startws(METAScenario)
             });
         }
         catch
