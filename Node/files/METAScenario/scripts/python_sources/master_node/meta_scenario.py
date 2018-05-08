@@ -29,6 +29,14 @@ def update_settings_blocking():
     return settings['nodes'], settings['repetitions']
 
 
+def update_settings_if_available(current_settings, current_reps):
+    LOG.info('Waiting for new settings')
+    while not SETTINGS_SYNC.empty():
+        settings = SETTINGS_SYNC.get()
+        current_settings, current_reps = settings['nodes'], settings['repetitions']
+    return current_settings, current_reps
+
+
 def run_scenario():
     current_slaves = []
     current_scenario = Scenario()
@@ -40,8 +48,10 @@ def run_scenario():
             configs, repetitions = update_settings_blocking()
             LOG.info(configs)
             while len(current_slaves) != len(configs):
-                LOG.warning('Config and slaves are unequal, udating...')
+                LOG.warning('Config and slaves are unequal, udating... %s', current_slaves)
+                LOG.warning(configs)
                 current_slaves = update_current_slaves(current_slaves)
+                configs, repetitions = update_settings_if_available(configs, repetitions)
                 sleep(5)
             current_scenario.stop()
             current_scenario = Scenario().start(current_slaves, configs, repetitions)
@@ -57,7 +67,6 @@ def update_current_slaves(current_slaves):
         while not SLAVES_SYNC.empty():
             current_slaves = SLAVES_SYNC.get()
     return current_slaves
-
 
 
 class Scenario:
