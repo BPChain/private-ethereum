@@ -150,5 +150,4 @@ def main():
 
 
 if __name__ == "__main__":
-    sleep(100_000)
     main()
