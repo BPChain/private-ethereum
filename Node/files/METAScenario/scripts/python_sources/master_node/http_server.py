@@ -20,8 +20,7 @@ class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
     # pylint: disable=invalid-name
     def do_POST(self):
         LOG.info(self)
-        content_length = int(self.headers['Content-Length']) if self.headers['Content-Length'] \
-            else 0
+        content_length = int(self.headers['Content-Length'])
         body = self.rfile.read(content_length)
         self.send_response(HTTPStatus.OK)
         self.end_headers()
