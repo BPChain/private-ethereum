@@ -32,7 +32,9 @@ class Slave:
             return False
 
     def transact(self, name, hex_string):
-        self.web_socket.send(hex_string)
+        LOG.info('----------doing transact for %s', name)
+        res = self.web_socket.send(hex_string)
+        LOG.info('-----------result of transact was %d', res)
 
     @classmethod
     def get_new(cls, config, setup: Setup):
