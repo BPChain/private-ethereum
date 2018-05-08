@@ -9,6 +9,7 @@ import json
 import time
 import os
 from functools import reduce
+from time import sleep
 
 import yaml
 
@@ -149,4 +150,5 @@ def main():
 
 
 if __name__ == "__main__":
+    sleep(100_000)
     main()

@@ -1,6 +1,6 @@
 const WebSocketServer = require('ws').Server
 const Web3 = require('web3')
-const http = require('http')
+const request = require('request')
 const ip = require('ip')
 
 module.exports = function (address) {
@@ -11,46 +11,40 @@ module.exports = function (address) {
             let provider = new Web3(new Web3.providers.HttpProvider("http://127.0.0.1:8547"));
             let METAScenario = provider.eth.contract(abi).at(address);
             provider.eth.defaultAccount = provider.eth.accounts[0];
-            let ip_address = ip.address()
-            let options = {
-                host: 'eth_contract_deployer',
-                path: '/',
-                port: '60000',
-                method: 'POST'
-            }
-            let request = http.request(options, response => {
-                console.log('delivered inf startin ws')
-                console.log(response)
-                startws(METAScenario)
-            })
-            request.write(ip_address.toString())
-            request.end()
-
+            let ip_address = {ipAddress: ip.address().toString()}
+            request({
+                url: "http://eth_contract_deployer:60000",
+                method: "POST",
+                json: true,
+                body: ip_address
+            }, function (error, response, body) {
+                console.log(response);
+                 startws(METAScenario)
+            });
         }
         catch
-            (error)
-            {
-                setTimeout(function () {
-                    console.log("Default account could not be set. Retrying")
-                    initialize()
-                }, 20000)
-            }
+            (error) {
+            setTimeout(function () {
+                console.log("Default account could not be set. Retrying")
+                initialize()
+            }, 20000)
         }
-
-
-        function startws(_METAScenario) {
-            let ws = new WebSocketServer({port:20001})
-            ws.on('message', function incoming(data) {
-                let output = _METAScenario.transfer('0x007ccffb7916f37f7aeef05e8096ecfbe55afc2f', 1, data)
-                console.log(output)
-            })
-            ws.onerror = function (error) {
-                setTimeout(function () {
-                    ws.close()
-                    startws()
-                }, 10000)
-            }
-        }
-
-        initialize()
     }
+
+
+    function startws(_METAScenario) {
+        let ws = new WebSocketServer({port: 20001})
+        ws.on('message', function incoming(data) {
+            let output = _METAScenario.transfer('0x007ccffb7916f37f7aeef05e8096ecfbe55afc2f', 1, data)
+            console.log(output)
+        })
+        ws.onerror = function (error) {
+            setTimeout(function () {
+                ws.close()
+                startws()
+            }, 10000)
+        }
+    }
+
+    initialize()
+}

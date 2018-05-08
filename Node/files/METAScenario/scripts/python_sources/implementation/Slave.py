@@ -1,4 +1,3 @@
-from typing import Dict
 
 from ..implementation import Setup
 from ..project_logger import set_up_logging
