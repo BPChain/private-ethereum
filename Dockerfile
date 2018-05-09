@@ -2,9 +2,9 @@ FROM ethereum/client-go:latest
 
 RUN apk add --update git bash python3 musl-dev gcc python3-dev py3-netifaces nodejs nodejs-npm nano
 RUN npm install -g truffle
+RUN pip3 install git+https://github.com/BPChain/scenario-orchestration-service.git#
 COPY requirements.txt requirements.txt
 RUN pip3 install -r requirements.txt
-RUN pip3 install git+https://github.com/BPChain/scenario-orchestration-service.git#
 
 COPY .ethash root/.ethash
 COPY files root/files
