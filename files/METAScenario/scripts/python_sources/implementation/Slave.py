@@ -2,7 +2,7 @@ from bp_orchestrator import AbstractSlave, AbstractSetup
 
 from ..project_logger import set_up_logging
 from time import sleep
-from websocket import create_connection, WebSocket
+from websocket import create_connection
 
 LOG = set_up_logging(__name__)
 
@@ -38,6 +38,3 @@ class Slave(AbstractSlave):
         ws.close()
         LOG.info('-----------result of transact was %d', res)
 
-    @classmethod
-    def get_new(cls, config, setup: Setup):
-        return Slave(config, setup)
