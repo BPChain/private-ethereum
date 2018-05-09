@@ -16,9 +16,6 @@ class Slave:
                 self.web_socket_address = 'ws://' + config['ipAddress']+':20001'
                 LOG.info("Connected")
                 is_connected = True
-                # result = web_socket.recv()
-                # LOG.info("Received '%s'", result)
-                # web_socket.close()
             except Exception as error:
                 LOG.error(error)
                 sleep(3)
@@ -26,6 +23,7 @@ class Slave:
     def is_alive(self):
         try:
             ws = create_connection(self.web_socket_address)
+            ws.close()
             return True
         except Exception as error:
             LOG.error(error)
@@ -35,6 +33,7 @@ class Slave:
         LOG.info('----------doing transact for %s', name)
         ws = create_connection(self.web_socket_address)
         res = ws.send(hex_string)
+        ws.close()
         LOG.info('-----------result of transact was %d', res)
 
     @classmethod
