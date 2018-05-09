@@ -1,4 +1,5 @@
-from ..implementation import Setup
+from bp_orchestrator import AbstractSlave, AbstractSetup
+
 from ..project_logger import set_up_logging
 from time import sleep
 from websocket import create_connection, WebSocket
@@ -6,8 +7,9 @@ from websocket import create_connection, WebSocket
 LOG = set_up_logging(__name__)
 
 
-class Slave:
-    def __init__(self, config, setup: Setup):
+class Slave(AbstractSlave):
+    def __init__(self, config, setup: AbstractSetup):
+        super().__init__(config, setup)
         LOG.info(config)
         LOG.info(setup)
         is_connected = False

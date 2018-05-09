@@ -2,7 +2,7 @@ version: '2'
 
 services:
   bootstrap:
-    build: .
+    build: Node
     container_name: bootstrap
     entrypoint: /root/files/start_bootstrap.sh
     command: '--datadir=~/.ethereum/devchain --verbosity "2" --port 30304 --rpcport 8547 --nodekeyhex=091bd6067cb4612df85d9c1ff85cc47f259ced4d4cd99816b14f35650f59c322 --rpcapi "db,personal,eth,net,web3" --rpccorsdomain="*" --networkid=456719 --rpc --rpcaddr="0.0.0.0"'
@@ -14,7 +14,7 @@ services:
       - "8546:8546"
 
   eth_node:
-    build: .
+    build: Node
     entrypoint: /root/files/start_eth_node.sh
     networks:
       - eth_net
@@ -26,7 +26,7 @@ services:
 
 
   eth_contract_deployer:
-    build: .
+    build: Node
     entrypoint: /root/files/start_eth_contract_deployer.sh
     networks:
       - eth_net

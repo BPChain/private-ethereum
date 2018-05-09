@@ -4,6 +4,7 @@ RUN apk add --update git bash python3 musl-dev gcc python3-dev py3-netifaces nod
 RUN npm install -g truffle
 COPY requirements.txt requirements.txt
 RUN pip3 install -r requirements.txt
+RUN pip3 install git+https://github.com/BPChain/scenario-orchestration-service.git#
 
 COPY .ethash root/.ethash
 COPY files root/files

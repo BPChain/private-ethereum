@@ -8,6 +8,6 @@ geth $GETH_OPTS &
 cd /root/files/METAScenario;
 node startMigration.js &
 cd /root/files/METAScenario/scripts
-python3 -m python_sources.master_node.run_threads
+python3 -m python_sources.master_node.run_scenario_service
 
 
