@@ -9,7 +9,6 @@ import json
 import time
 import os
 from functools import reduce
-from time import sleep
 
 import yaml
 
