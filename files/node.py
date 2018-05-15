@@ -10,6 +10,7 @@ import time
 import os
 from functools import reduce
 
+import psutil as psutil
 import yaml
 
 from web3 import Web3, HTTPProvider
@@ -110,7 +111,7 @@ def get_node_data(blocks_to_send, last_sent_block, web3, hostname):
     node_data = {"chainName": "ethereum", "hostId": host_id, "hashrate": hash_rate,
                  "blockSize": last_block_size,
                  "avgDifficulty": AVG_BLOCK_DIFFICULTY, "avgBlocktime": AVG_BLOCK_TIME,
-                 "isMining": is_mining, "target": hostname}
+                 "isMining": is_mining, "target": hostname, 'cpuUsage': psutil.cpu_percent()}
     return node_data
 
 

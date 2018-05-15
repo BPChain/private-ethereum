@@ -1,13 +1,13 @@
 version: '2'
 
 services:
-  bootstrap:
+  eht_bootstrap:
     build: .
-    container_name: bootstrap
+    container_name: eth_bootstrap
     entrypoint: /root/files/start_bootstrap.sh
     command: '--datadir=~/.ethereum/devchain --verbosity "2" --port 30304 --rpcport 8547 --nodekeyhex=091bd6067cb4612df85d9c1ff85cc47f259ced4d4cd99816b14f35650f59c322 --rpcapi "db,personal,eth,net,web3" --rpccorsdomain="*" --networkid=456719 --rpc --rpcaddr="0.0.0.0"'
     networks:
-      - backendnet
+      - eth_net
     ports:
       - "30304:30304"
       - "30304:30304/udp"
@@ -17,8 +17,9 @@ services:
     build: .
     entrypoint: /root/files/start_eth_node.sh
     networks:
-      - backendnet
-    command: '--datadir=~/.ethereum/devchain --verbosity "3" --port 30304 --rpcport 8547 --rpccorsdomain="http://127.0.0.1:8547" --networkid=456719 --rpc --rpcapi "db,personal,eth,net,web3,miner,admin" --bootnodes="enode://288b97262895b1c7ec61cf314c2e2004407d0a5dc77566877aad1f2a36659c8b698f4b56fd06c4a0c0bf007b4cfb3e7122d907da3b005fa90e724441902eb19e@IPAddress:30304"'
+      - eth_net
+    command: '--datadir=~/.ethereum/devchain --verbosity "2" --port 30304 --rpcport 8547
+    --rpccorsdomain="http://127.0.0.1:8547" --networkid=456719 --rpc --rpcapi "db,personal,eth,net,web3,miner,admin" --bootnodes="enode://288b97262895b1c7ec61cf314c2e2004407d0a5dc77566877aad1f2a36659c8b698f4b56fd06c4a0c0bf007b4cfb3e7122d907da3b005fa90e724441902eb19e@IPAddress:30304"'
     stdin_open: true
     tty: true
     environment:
@@ -29,7 +30,7 @@ services:
     build: .
     entrypoint: /root/files/start_eth_contract_deployer.sh
     networks:
-      - backendnet
+      - eth_net
     command: '--datadir=~/.ethereum/devchain --verbosity "2" --port 30304 --rpcport 8547 --rpccorsdomain="http://127.0.0.1:8547" --networkid=456719 --rpc --rpcapi "db,personal,eth,net,web3,miner,admin" --bootnodes="enode://288b97262895b1c7ec61cf314c2e2004407d0a5dc77566877aad1f2a36659c8b698f4b56fd06c4a0c0bf007b4cfb3e7122d907da3b005fa90e724441902eb19e@IPAddress:30304"'
     stdin_open: true
     tty: true
@@ -39,17 +40,8 @@ services:
     environment:
       TARGET_HOSTNAME: ${HOSTNAME}
 
-  eth_lazy:
-    build: .
-    entrypoint: /root/files/start_eth_lazy_node.sh
-    networks:
-      - backendnet
-    command: '--datadir=~/.ethereum/devchain --verbosity "2" --port 30304 --rpcport 8547 --rpccorsdomain="http://127.0.0.1:8547" --networkid=456719 --rpc --rpcapi "db,personal,eth,net,web3,admin" --bootnodes="enode://288b97262895b1c7ec61cf314c2e2004407d0a5dc77566877aad1f2a36659c8b698f4b56fd06c4a0c0bf007b4cfb3e7122d907da3b005fa90e724441902eb19e@IPAddress:30304"'
-    stdin_open: true
-    tty: true
-    environment:
-      TARGET_HOSTNAME: ${HOSTNAME}
 
 networks:
-  backendnet:
+  eth_net:
+   driver: bridge
 

@@ -5,10 +5,10 @@
   "main": "index.js",
   "dependencies": {
     "execa": "^0.10.0",
-    "random-bytes": "^1.0.0",
-    "sleepjs": "^3.0.0",
-    "truffle-contract": "^3.0.4",
-    "ws": "^5.1.0"
+    "ip": "^1.1.5",
+    "web3": "^0.20.6",
+    "ws": "^5.1.0",
+    "request": "^2.85.0"
   },
   "devDependencies": {},
   "scripts": {

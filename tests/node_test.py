@@ -3,7 +3,7 @@
 from unittest.mock import Mock
 from attrdict import AttrDict
 
-from Node.files import node
+from files import node
 
 LAST_SENT_BLOCK = AttrDict({'number': 0, 'difficulty': 2.0, 'timestamp': 1})
 BLOCKS = [AttrDict({'number': 1, 'difficulty': 2.0, 'timestamp': 2}),
