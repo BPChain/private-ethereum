@@ -38,10 +38,15 @@ module.exports = function (address) {
         let wsServer= new WebSocketServer({port: 20001})
         wsServer.on('connection', function connection(socket) {
             socket.on('message', function incoming(data) {
-                console.log(data)
-                console.log('!!!!!!!!!!!!!Doing transaction')
-                let output = _METAScenario.transfer('0x007ccffb7916f37f7aeef05e8096ecfbe55afc2f', 1, data)
-                console.log(output)
+                try {
+                    console.log(data)
+                    console.log('!!!!!!!!!!!!!Doing transaction')
+                    let output = _METAScenario.transfer('0x007ccffb7916f37f7aeef05e8096ecfbe55afc2f', 1, data)
+                    console.log(output)
+                } catch (error) {
+                    console.log("!!!!!!!!!Transaction failed!!!!!!!!!")
+                    console.log(error)
+                }
             })
             socket.onerror = function (error) {
                 setTimeout(function () {
