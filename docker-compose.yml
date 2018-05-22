@@ -1,9 +1,9 @@
 version: '2'
 
 services:
-  e_bootstrap:
+  eth_bootstrap:
     build: .
-    container_name: e_bootstrap
+    container_name: eth_bootstrap
     entrypoint: /root/files/start_bootstrap.sh
     command: '--datadir=~/.ethereum/devchain --verbosity "2" --port 30304 --rpcport 8547 --nodekeyhex=091bd6067cb4612df85d9c1ff85cc47f259ced4d4cd99816b14f35650f59c322 --rpcapi "db,personal,eth,net,web3" --rpccorsdomain="*" --networkid=456719 --rpc --rpcaddr="0.0.0.0"'
     networks:
