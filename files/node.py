@@ -132,7 +132,7 @@ def get_node_data(blocks_to_send, last_sent_block, web3, hostname):
     host_id = web3.admin.nodeInfo.id
     hash_rate = web3.eth.hashrate
     last_block_size = web3.eth.getBlock('latest').size
-    if MINER == 1:
+    if MINER == '1':
         is_mining = 1 if web3.eth.mining else 0
     else:
         is_mining = 0
