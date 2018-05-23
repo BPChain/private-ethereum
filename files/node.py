@@ -90,7 +90,7 @@ def calculate_avg_transactions_per_block(blocks_to_send):
 
 def provide_data_every(n_seconds, web3, hostname):
     number_of_last_block = 0
-    node_data = {"avgDifficulty": 0, "avgBlocktime": 0}
+    node_data = {"avgDifficulty": 0, "avgBlocktime": 0, "avgTransactions": 0}
     while True:
         time.sleep(n_seconds)
         try:
