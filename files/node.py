@@ -18,11 +18,12 @@ from websocket import create_connection, WebSocket
 
 from .python_logger import set_up_logging
 
-# pylint: disable=global-statement
+# pylint: disable=global-statement, broad-except
 
 AVG_BLOCK_TIME = 0
 AVG_BLOCK_DIFFICULTY = 0
 AVG_TRANSACTIONS_PER_BLOCK = 0
+PROCESSES = []
 
 LOG = set_up_logging(__name__)
 
@@ -87,7 +88,7 @@ def calculate_avg_transactions_per_block(blocks_to_send, last_sent_block):
     else:
         blocks_to_send = [last_sent_block] + blocks_to_send
         return reduce((lambda accum, block: accum
-                       + len(block.transactions)), blocks_to_send, 0) / len(
+                                            + len(block.transactions)), blocks_to_send, 0) / len(
             blocks_to_send)
 
 
@@ -100,7 +101,6 @@ def provide_data_every(n_seconds, web3, hostname):
             number_of_last_block, node_data = provide_data(
                 number_of_last_block, node_data, web3, hostname)
             send_data(node_data)
-        # pylint: disable=broad-except
         except Exception as exception:
             LOG.warning(
                 "During providing Data an error occurred: '%s'", exception)
@@ -119,6 +119,10 @@ def provide_data(last_block_number, old_node_data, web3, hostname):
     print(node_data)
     last_block_number = new_last_block_number
     return last_block_number, node_data
+
+
+def cpu_usage():
+    return sum(process.cpu_percent() for process in PROCESSES) / psutil.cpu_count()
 
 
 def get_node_data(blocks_to_send, last_sent_block, web3, hostname):
@@ -141,7 +145,7 @@ def get_node_data(blocks_to_send, last_sent_block, web3, hostname):
                  "blockSize": last_block_size,
                  "avgDifficulty": AVG_BLOCK_DIFFICULTY, "avgBlocktime": AVG_BLOCK_TIME,
                  "avgTransactions": AVG_TRANSACTIONS_PER_BLOCK,
-                 "isMining": is_mining, "target": hostname, 'cpuUsage': psutil.cpu_percent()}
+                 "isMining": is_mining, "target": hostname, 'cpuUsage': cpu_usage()}
     return node_data
 
 
@@ -164,8 +168,6 @@ def send_data(node_data):
         result = web_socket.recv()
         LOG.info("Received '%s'", result)
         web_socket.close()
-    # Not nice, but works for now.
-    # pylint: disable=broad-except
     except Exception as exception:
         LOG.warning("Exception occurred during sending: '%s'", exception)
 
@@ -176,6 +178,8 @@ def main():
     web3_connector = connect_to_blockchain()
     unlock_account(web3_connector)
     start_mining(web3_connector)
+    global PROCESSES
+    PROCESSES = list(psutil.process_iter())
     provide_data_every(send_period, web3_connector, hostname)
 
 
