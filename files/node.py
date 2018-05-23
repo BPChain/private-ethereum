@@ -12,7 +12,7 @@ from functools import reduce
 
 import psutil as psutil
 import yaml
-
+import sys
 from web3 import Web3, HTTPProvider
 from websocket import create_connection, WebSocket
 
@@ -25,6 +25,8 @@ AVG_BLOCK_DIFFICULTY = 0
 AVG_TRANSACTIONS_PER_BLOCK = 0
 
 LOG = set_up_logging(__name__)
+
+MINER = sys.argv[1]
 
 
 def connect_to_blockchain():
@@ -119,6 +121,7 @@ def provide_data(last_block_number, old_node_data, web3, hostname):
 
 
 def get_node_data(blocks_to_send, last_sent_block, web3, hostname):
+    global MINER
     global AVG_BLOCK_DIFFICULTY
     global AVG_BLOCK_TIME
     global AVG_TRANSACTIONS_PER_BLOCK
@@ -129,7 +132,10 @@ def get_node_data(blocks_to_send, last_sent_block, web3, hostname):
     host_id = web3.admin.nodeInfo.id
     hash_rate = web3.eth.hashrate
     last_block_size = web3.eth.getBlock('latest').size
-    is_mining = 1 if web3.eth.mining else 0
+    if MINER == 1:
+        is_mining = 1 if web3.eth.mining else 0
+    else:
+        is_mining = 0
     node_data = {"chainName": "ethereum", "hostId": host_id, "hashrate": hash_rate,
                  "blockSize": last_block_size,
                  "avgDifficulty": AVG_BLOCK_DIFFICULTY, "avgBlocktime": AVG_BLOCK_TIME,
