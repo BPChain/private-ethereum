@@ -136,8 +136,6 @@ def get_node_data(blocks_to_send, last_sent_block, web3, hostname):
         is_mining = 1 if web3.eth.mining else 0
     else:
         is_mining = 0
-    print("##############MINER#########")
-    print(MINER)
     node_data = {"chainName": "ethereum", "hostId": host_id, "hashrate": hash_rate,
                  "blockSize": last_block_size,
                  "avgDifficulty": AVG_BLOCK_DIFFICULTY, "avgBlocktime": AVG_BLOCK_TIME,
