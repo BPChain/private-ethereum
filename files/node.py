@@ -23,7 +23,6 @@ from .python_logger import set_up_logging
 AVG_BLOCK_TIME = 0
 AVG_BLOCK_DIFFICULTY = 0
 AVG_TRANSACTIONS_PER_BLOCK = 0
-PROCESSES = []
 
 LOG = set_up_logging(__name__)
 
@@ -116,7 +115,7 @@ def provide_data(last_block_number, old_node_data, web3, hostname):
         node_data["avgDifficulty"] = old_node_data["avgDifficulty"]
         node_data["avgBlocktime"] = old_node_data["avgBlocktime"]
         node_data["avgTransactions"] = old_node_data["avgTransactions"]
-    print(node_data)
+    LOG.info(node_data)
     last_block_number = new_last_block_number
     return last_block_number, node_data
 
