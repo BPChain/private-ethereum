@@ -122,7 +122,8 @@ def provide_data(last_block_number, old_node_data, web3, hostname):
 
 
 def cpu_usage():
-    return sum(process.cpu_percent() for process in PROCESSES) / psutil.cpu_count()
+    return sum([p.cpu_percent() for p in psutil.process_iter()
+                if 'geth' in p.info['name']]) / psutil.cpu_count()
 
 
 def get_node_data(blocks_to_send, last_sent_block, web3, hostname):
@@ -178,8 +179,6 @@ def main():
     web3_connector = connect_to_blockchain()
     unlock_account(web3_connector)
     start_mining(web3_connector)
-    global PROCESSES
-    PROCESSES = list(psutil.process_iter())
     provide_data_every(send_period, web3_connector, hostname)
 
 
