@@ -122,7 +122,7 @@ def provide_data(last_block_number, old_node_data, web3, hostname):
 
 def cpu_usage():
     return sum([p.cpu_percent() for p in psutil.process_iter()
-                if 'geth' in p.info['name']]) / psutil.cpu_count()
+                if 'geth' in p.name()]) / psutil.cpu_count()
 
 
 def get_node_data(blocks_to_send, last_sent_block, web3, hostname):
