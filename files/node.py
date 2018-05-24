@@ -6,13 +6,13 @@
     seen in gather_data"""
 
 import json
-import time
 import os
+import sys
+import time
 from functools import reduce
 
 import psutil as psutil
 import yaml
-import sys
 from web3 import Web3, HTTPProvider
 from websocket import create_connection, WebSocket
 
@@ -26,7 +26,7 @@ AVG_TRANSACTIONS_PER_BLOCK = 0
 
 LOG = set_up_logging(__name__)
 
-MINER = sys.argv[1]
+MINER = sys.argv[1] if len(sys.argv) > 1 else '1'
 
 
 def connect_to_blockchain():
@@ -86,9 +86,9 @@ def calculate_avg_transactions_per_block(blocks_to_send, last_sent_block):
         return AVG_TRANSACTIONS_PER_BLOCK
     else:
         blocks_to_send = [last_sent_block] + blocks_to_send
-        return reduce((lambda accum, block: accum
-                                            + len(block.transactions)), blocks_to_send, 0) / len(
-            blocks_to_send)
+        transactions = reduce((lambda summed, block: summed + len(block.transactions)),
+                              blocks_to_send, 0)
+        return transactions / len(blocks_to_send)
 
 
 def provide_data_every(n_seconds, web3, hostname):
@@ -126,10 +126,7 @@ def cpu_usage():
 
 
 def get_node_data(blocks_to_send, last_sent_block, web3, hostname):
-    global MINER
-    global AVG_BLOCK_DIFFICULTY
-    global AVG_BLOCK_TIME
-    global AVG_TRANSACTIONS_PER_BLOCK
+    global AVG_BLOCK_DIFFICULTY, AVG_BLOCK_TIME, AVG_TRANSACTIONS_PER_BLOCK
     AVG_BLOCK_DIFFICULTY = calculate_avg_block_difficulty(blocks_to_send)
     AVG_BLOCK_TIME = calculate_avg_block_time(blocks_to_send, last_sent_block)
     AVG_TRANSACTIONS_PER_BLOCK = calculate_avg_transactions_per_block(
