@@ -4,7 +4,7 @@ const ws = require('ws')
 const WebSocketServer = ws.Server
 const requiredBalance = 9999999999
 var web3 = new Web3(new Web3.providers.HttpProvider("http://127.0.0.1:8547"))
-function start() {
+function deployContract() {
     try {
         var account = web3.eth.accounts[0];
         if(web3.eth.getBalance(account).toString(10) > requiredBalance) {
@@ -71,5 +71,5 @@ function startWebSocket(contractAddress) {
 
 }
 
-start()
+deployContract()
 
