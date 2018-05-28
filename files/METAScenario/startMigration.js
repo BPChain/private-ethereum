@@ -3,6 +3,7 @@ const Web3 = require('web3')
 const ws = require('ws')
 const WebSocketServer = ws.Server
 const requiredBalance = 9999999999
+const sleepSeconds = require('sleepjs').sleepSeconds
 const web3 = new Web3(new Web3.providers.HttpProvider("http://127.0.0.1:8547"))
 const data = require('fs')
   .readFileSync('deployData.txt')
