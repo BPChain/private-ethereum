@@ -67,6 +67,7 @@ function startWebSocket (contractAddress) {
     sleepSeconds(10)
       .then(() => startWebSocket(contractAddress))
   }
+
 }
 
 deployContract()

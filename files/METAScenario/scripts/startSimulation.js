@@ -23,6 +23,7 @@ function waitForContractAddress () {
   ws.onclose = function () {
     sleepSeconds(10)
       .then(waitForContractAddress)
+
   }
 
 }
