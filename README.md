@@ -1,7 +1,7 @@
 # Data aggregator
 
-Master-Branch: [![Build Status](https://travis-ci.org/BPChain/private-ethereum.svg?branch=master)](https://travis-ci.org/BPChain/private-ethereum) [![Coverage Status](https://coveralls.io/repos/github/BPChain/private-ethereum/badge.svg?branch=master)](https://coveralls.io/github/BPChain/private-ethereum?branch=master) <br />
-Dev-Branch: [![Build Status](https://travis-ci.org/BPChain/private-ethereumr.svg?branch=dev)](https://travis-ci.org/BPChain/private-ethereum) [![Coverage Status](https://coveralls.io/repos/github/BPChain/private-ethereum/badge.svg?branch=dev)](https://coveralls.io/github/BPChain/private-ethereum?branch=dev) <br />
+Master-Branch: [![Build Status](https://travis-ci.org/BPChain/private-ethereum.svg?branch=master)](https://travis-ci.org/BPChain/private-ethereum) <br />
+Dev-Branch: [![Build Status](https://travis-ci.org/BPChain/private-ethereumr.svg?branch=dev)](https://travis-ci.org/BPChain/private-ethereum)  <br />
 
 
 This is the blockchain backend, which interconnects several hosts to participate in a blockchain. Each host sends its statistics eg. hashrate to a server which is not implemented here.
