@@ -1,5 +1,4 @@
 attrdict==2.0.0
-bp-orchestrator==0.6
 certifi==2018.4.16
 chardet==3.0.4
 cytoolz==0.9.0.1
