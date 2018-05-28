@@ -1,11 +1,16 @@
+"""I provide an adapter for the api of the ethereum web3 client"""
+# pylint disable=no-member
+
 from time import sleep
+
+from web3 import Web3, HTTPProvider
 
 from statistics_reader.block import Block
 from statistics_reader.blockchain_adapter import BlockchainAdapter
-from web3 import Web3, HTTPProvider
 
 
 class EthereumAdapter(BlockchainAdapter):
+    """I am an adapter for the api of the ethereum web3 client"""
 
     def __init__(self, is_miner):
         super().__init__(is_miner)
@@ -23,7 +28,6 @@ class EthereumAdapter(BlockchainAdapter):
         return self.web3_rpc.eth.getBlock(number)
 
     def make_block_from(self, raw_block) -> Block:
-        #  TODO: Check the matter of the genesis block with potential timestamp 0
         return Block(raw_block.difficulty, raw_block.transactions,
                      raw_block.timestamp, raw_block.size)
 
@@ -37,4 +41,3 @@ class EthereumAdapter(BlockchainAdapter):
 
     def host_id(self):
         return self.web3_rpc.admin.nodeInfo.id
-

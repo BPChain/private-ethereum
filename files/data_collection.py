@@ -1,3 +1,5 @@
+"""Collect Data from the ethereum blockchain and send it to the server"""
+
 import sys
 from time import sleep
 
