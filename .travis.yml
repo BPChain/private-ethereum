@@ -10,14 +10,8 @@ install:
   - pip install git+https://github.com/BPChain/blockchain_statistics_readout.git
   - pip install -r requirements.txt
   - pip install pylint
-  - pip install coveralls
 # command to test
 script:
   - pylint files
   - pylint files/METAScenario/scripts/python_sources/
-  - pylint tests
-  - pytest
-  - coverage run -m pytest
-  - coverage report -m --include="files/*"
-after_success:
-  - coveralls
+

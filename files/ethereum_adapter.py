@@ -1,5 +1,5 @@
 """I provide an adapter for the api of the ethereum web3 client"""
-# pylint disable=no-member
+# pylint: disable=no-member
 
 from time import sleep
 
