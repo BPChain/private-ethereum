@@ -1,4 +1,4 @@
-const abi = require('../contractAbi.json')
+const abi = require('./contractAbi.json')
 const Web3 = require('web3')
 const ws = require('ws')
 const WebSocketServer = ws.Server
