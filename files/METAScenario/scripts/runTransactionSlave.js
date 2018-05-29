@@ -8,7 +8,7 @@ const sleepSeconds = require('sleepjs').sleepSeconds
 const provider = new Web3(new Web3.providers.HttpProvider('http://127.0.0.1:8547'))
 
 module.exports = function (address) {
-  function initialize () {
+  function initialize() {
     try {
       const METAScenario = provider.eth.contract(abi)
         .at(address)
@@ -40,7 +40,7 @@ module.exports = function (address) {
   }
 
 
-  function startws (_METAScenario) {
+  function startws(_METAScenario) {
     console.log('!!!!! Started Websocket')
     const wsServer = new WebSocketServer({port: 20001})
     wsServer.on('connection', (socket) => {
@@ -57,7 +57,7 @@ module.exports = function (address) {
           console.log(error)
         }
       })
-      socket.onerror = function (error) {
+      socket.onerror = (error) => {
         console.error(error)
         sleepSeconds(20)
           .then(() => {
@@ -69,5 +69,6 @@ module.exports = function (address) {
   }
 
   initialize()
+}
 
 
