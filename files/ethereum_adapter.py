@@ -16,9 +16,9 @@ class EthereumAdapter(BlockchainAdapter):
         super().__init__(is_miner)
         self.web3_rpc = Web3(HTTPProvider('http://127.0.0.1:8547',
                                           request_kwargs={'timeout': 120}))
+        self.web3_rpc.personal.unlockAccount(self.web3_rpc.eth.accounts[0], "123", 0)
         while not self.web3_rpc.isConnected():
             sleep(1)
-        self.web3_rpc.personal.unlockAccount(self.web3_rpc.eth.accounts[0], "123", 0)
         self.web3_rpc.miner.start(1)
 
     def fetch_newest_block_number(self) -> int:
