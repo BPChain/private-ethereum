@@ -1,4 +1,4 @@
-FROM ethereum/client-go:latest
+FROM ethereum/client-go:v1.8.9
 
 RUN apk add --update linux-headers git bash
 RUN apk add --update python3 musl-dev gcc python3-dev py3-netifaces py3-psutil nodejs nodejs-npm
