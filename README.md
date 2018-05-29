@@ -1,4 +1,4 @@
-# Data aggregator
+# Private ethereum
 
 Master-Branch: [![Build Status](https://travis-ci.org/BPChain/private-ethereum.svg?branch=master)](https://travis-ci.org/BPChain/private-ethereum) <br />
 Dev-Branch: [![Build Status](https://travis-ci.org/BPChain/private-ethereumr.svg?branch=dev)](https://travis-ci.org/BPChain/private-ethereum)  <br />
