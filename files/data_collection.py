@@ -4,7 +4,6 @@ import sys
 from time import sleep
 
 import yaml
-from statistics_reader.blockchain_reader import BlockchainReader
 from statistics_reader.sender import Sender
 
 from .ethereum_adapter import EthereumAdapter
