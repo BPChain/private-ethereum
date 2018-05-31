@@ -15,7 +15,7 @@ which runs a websocket receiving transaction commands from the [`contract_deploy
 
 ### eth_contract_deployer files
 1. [`data_collection`](https://github.com/BPChain/private-ethereum/blob/master/files/data_collection.py) which sends the runtime data of the chain to a server.
-2.  [`contract_migration`](https://github.com/BPChain/private-xain/blob/master/files/METAScenario/startMigration.js) which deploys the smart contract to run transaction with a specific payload. It also opens a websocket connection for retrieving the smart contract address, so the nodes are able to use the same smart contract instance.
+2.  [`contract_migration`](https://github.com/BPChain/private-ethereum/blob/master/files/METAScenario/startMigration.js) which deploys the smart contract to run transaction with a specific payload. It also opens a websocket connection for retrieving the smart contract address, so the nodes are able to use the same smart contract instance.
 3. [`master`](./python_sources/master) contains the main entry point to start the 
 [`scenario-orchestration-service`](https://github.com/BPChain/scenario-orchestration-service) which 
 listens for input from the [`private-chain-controller` ](https://github.com/BPChain/private-chain-controller)
