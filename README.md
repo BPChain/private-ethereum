@@ -10,7 +10,7 @@ Run Ethereum in docker. We have three different docker images. eth_node for runn
 1. [`data_collection`](https://github.com/BPChain/private-ethereum/blob/master/files/data_collection.py) which sends the runtime data of the chain to a server. 
 2. [`scenario_slave`](https://github.com/BPChain/private-ethereum/blob/master/files/METAScenario/scripts/python_sources/implementation/slave.py)
 which runs a websocket receiving transaction commands from the [`contract_deployer`](https://github.com/BPChain/private-xain/blob/master/files/METAScenario/scripts/python_sources/master_node/run_scenario_service.py)
-3. [`scenario_execution_scripts`](https://github.com/BPChain/private-ethereum/tree/master/files/METAScenario/scripts) which implement the ethereum specific execution of a transaction. They are connected with the [`scenario_slave`](https://github.com/BPChain/private-xain/blob/master/files/METAScenario/scripts/python_sources/implementation/slave.py)
+3. [`scenario_execution_scripts`](https://github.com/BPChain/private-ethereum/tree/master/files/METAScenario/scripts) which implements the ethereum specific execution of a transaction. They are connected with the [`scenario_slave`](https://github.com/BPChain/private-xain/blob/master/files/METAScenario/scripts/python_sources/implementation/slave.py)
 
 
 ### eth_contract_deployer files
