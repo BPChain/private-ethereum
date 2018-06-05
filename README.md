@@ -26,5 +26,5 @@ at port 22000.
 
 ### Docker Setup
 All nodes use the same Dockerfile but have different entrypoints defined in the [`docker-compose.yml`](https://github.com/BPChain/private-ethereum/blob/dev/docker-compose.yml).
-To run the blockchain just start it by running docker-compose up. Please note that scaling is allowed only on the xain_node.
+To run the blockchain just start it by running docker-compose up. Please note that scaling is allowed only on the eth_node.
 
